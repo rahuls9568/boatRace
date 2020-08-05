@@ -3,6 +3,7 @@ const ENEMY_SPAWN_TIME = 3500;
 var CURR_SPEED = 0;
 var CURR_SPAWN_TIME = 0;
 var isMoveRight = false, isMoveLeft = false;
+var CURR_MOVE_SPEED = 0;
 
 class gameplay extends Phaser.Scene
 {
@@ -36,6 +37,7 @@ class gameplay extends Phaser.Scene
         
         CURR_SPEED = SCROLL_SPEED;
         CURR_SPAWN_TIME = ENEMY_SPAWN_TIME;
+        CURR_MOVE_SPEED = CAR_MOVE_SPEED;
         
         this.agrid.placeAtIndex(115,this.bg);
         Align.scaleToGameH(this.bg,1,this);
@@ -56,6 +58,8 @@ class gameplay extends Phaser.Scene
             this.CheckCarEnemyCollision(bodyA.gameObject, bodyB.gameObject);
         }, this);
 
+        this.leftBtn = null;
+        this.rightBtn = null;
         if(isMobile != -1)
         {
             this.leftBtn = this.add.image(0,0,'leftImg').setOrigin(0.5).setInteractive();
@@ -148,10 +152,12 @@ class gameplay extends Phaser.Scene
         this.gameTimer += game.loop.delta;
         if(this.gameTimer > 10000)
         {
+            this.gameTimer = 0;
             if(CURR_SPEED < 2 * SCROLL_SPEED)
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
-                CURR_SPAWN_TIME -= 150;
+                CURR_SPAWN_TIME -= 100;
+                CURR_MOVE_SPEED += CAR_MOVE_SPEED*0.1;
             }
         }
 
@@ -190,8 +196,8 @@ class gameplay extends Phaser.Scene
         this.scoreText.y -= CURR_SPEED;
         if(isMobile != -1)
         {
-            this.leftBtn -= CURR_SPEED;
-            this.rightBtn -= CURR_SPEED;
+            this.leftBtn.y -= CURR_SPEED;
+            this.rightBtn.y -= CURR_SPEED;
         }
     }
 
@@ -200,12 +206,12 @@ class gameplay extends Phaser.Scene
         if(isMoveRight)
         {
             if(this.car.x < config.width-config.width*0.125)
-                this.car.x += CAR_MOVE_SPEED;
+                this.car.x += CURR_MOVE_SPEED;
         }
         else if(isMoveLeft)
         {
             if(this.car.x > config.width*0.125)
-                this.car.x -= CAR_MOVE_SPEED;
+                this.car.x -= CURR_MOVE_SPEED;
         }
     }
 
@@ -223,7 +229,7 @@ class gameplay extends Phaser.Scene
             }
             if (enemy != null) {
                 this.isGameOver = true;
-                this.car.setVisible(false);
+                //this.car.setVisible(false);
                 //var explode = this.add.sprite(this.car.x,this.car.y,'explosion',0).setOrigin(0.5).setScale(0.3);
                 //explode.play('blastAnim');
             }

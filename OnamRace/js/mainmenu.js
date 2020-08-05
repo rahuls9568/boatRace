@@ -1,0 +1,68 @@
+class mainmenu extends Phaser.Scene
+{
+    constructor()
+    {
+        super("mainmenu");
+    }
+
+    preload()
+    {
+        // sfxFlag = true;
+        // musicFlag = true;
+
+        this.scene.bringToTop();
+        this.load.image("menubg", "images/bg1.png");
+        this.load.image("playBtn","images/playBtn.png");
+        this.load.image("insBtn","images/instBtn.png");
+        this.load.image("settingBtn","images/settingBtn.png");
+        this.load.image("gameName","images/gameName.png");
+    }
+
+    create()
+    {
+        var bg = this.add.image(config.width/2,config.height/2,'menubg').setOrigin(0.5);
+        
+        var gname = this.add.image(config.width/2,0,'gameName').setOrigin(0.5);
+        var playBtn = this.add.image(config.width/2,0,'playBtn').setOrigin(0.5).setInteractive();
+        var insBtn = this.add.image(config.width/2,0,'insBtn').setOrigin(0.5).setInteractive()//.setVisible(false);
+        var settingBtn = this.add.image(config.width/2,0,'settingBtn').setOrigin(0.5).setInteractive();
+		//this.carImage = this.add.image(config.width/2,config.height/2 - 50,currentCar.menukey).setOrigin(0.5);
+        this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
+
+		
+		playBtn.on("pointerdown",function(pointer){
+            game.scene.start("gameplay");
+            playBtn.removeListener("pointerdown");
+            insBtn.removeListener("pointerdown");
+            settingBtn.removeListener("pointerdown");
+        },this);
+		settingBtn.on("pointerdown",function(pointer){
+            game.scene.start("settings");
+            playBtn.removeListener("pointerdown");
+            insBtn.removeListener("pointerdown");
+            settingBtn.removeListener("pointerdown");
+        },this)
+		insBtn.on("pointerdown",function(pointer){
+            game.scene.start("instruction");
+            playBtn.removeListener("pointerdown");
+            insBtn.removeListener("pointerdown");
+            settingBtn.removeListener("pointerdown");
+        },this)
+        
+        this.agrid.placeAtIndex(115,bg);
+        Align.scaleToGameH(bg, 1, this);
+        this.agrid.placeAtIndex(49,gname);
+        Align.scaleToGameH(gname,0.3,this);
+        this.agrid.placeAtIndex(115,playBtn)
+        Align.scaleToGameH(playBtn,0.1,this)
+        this.agrid.placeAtIndex(148,insBtn)
+        Align.scaleToGameH(insBtn,0.1,this)
+        this.agrid.placeAtIndex(181,settingBtn)
+        Align.scaleToGameH(settingBtn,0.1,this)
+	    
+        //this.agrid.showNumbers();
+
+	}
+	
+	
+}

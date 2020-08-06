@@ -15,36 +15,74 @@ class gameplay extends Phaser.Scene
     preload()
     {
         this.scene.bringToTop();
-        this.load.image(currentBoat.gamekey,currentBoat.playImg);
+        //this.load.image(currentBoat.gamekey,currentBoat.playImg);
         this.load.image('gamebg1','images/bg1.png')
         this.load.image('gamebg2','images/bg2.png')
         this.load.image('gamebg3','images/bg3.png')
         this.load.image('gamebg4','images/bg4.png')
+        for(var i = 0; i < Boats.length; i++)
+        {
+            this.load.spritesheet(Boats[i].gamekey, Boats[i].playImg, Boats[i].frameDetails);
+        }
         for(var i = 0; i < Obstacles.length; i++)
         {
             this.load.image(Obstacles[i].gamekey,Obstacles[i].imgPath);
         }
+        this.load.image('leftImg','images/leftBtn.png');
+        this.load.image('rightImg','images/rightBtn.png');
     }
 
     create()
     {
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
 
+        for(var i = 0; i < Boats.length; i++)
+        {
+            this.anims.create({
+                key: Boats[i].animkey,
+                repeat: -1,
+                frameRate: 8,
+                frames: this.anims.generateFrameNames(Boats[i].gamekey, {
+                    start: 0,
+                    end: 5
+                })
+            });
+        }
+
         scoreManager.ResetScore();
-        this.bg = this.add.image(config.width/2,config.height/2,'gamebg1').setOrigin(0.5);
-        this.car = this.matter.add.image(0,0, currentBoat.gamekey).setOrigin(0.5).setSensor(true);
+        this.bg1 = this.add.image(config.width/2,config.height/2,'gamebg1').setOrigin(0.5);
+        this.bg2 = this.add.image(config.width/2,config.height/2,'gamebg2').setOrigin(0.5);
+        this.bg3 = this.add.image(config.width/2,config.height/2,'gamebg3').setOrigin(0.5);
+        this.bg4 = this.add.image(config.width/2,config.height/2,'gamebg4').setOrigin(0.5);
+        this.car = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
+        this.car.play(currentBoat.animkey);
         this.scoreText = this.add.text(0,0,"Score : 0",{font : "bold 30px Arial",fill:"#000000",align:"left"}).setOrigin(0);
         
         CURR_SPEED = SCROLL_SPEED;
         CURR_SPAWN_TIME = ENEMY_SPAWN_TIME;
         CURR_MOVE_SPEED = CAR_MOVE_SPEED;
         
-        this.agrid.placeAtIndex(115,this.bg);
-        Align.scaleToGameH(this.bg,1,this);
+        this.agrid.placeAtIndex(115,this.bg1);
+        Align.scaleToGameH(this.bg1,1,this);
+        this.bg1.y -= 0*this.bg1.displayHeight;
+        this.agrid.placeAtIndex(115,this.bg2);
+        Align.scaleToGameH(this.bg2,1,this);
+        this.bg2.y -= 1*this.bg2.displayHeight;
+        this.agrid.placeAtIndex(115,this.bg3);
+        Align.scaleToGameH(this.bg3,1,this);
+        this.bg3.y -= 2*this.bg3.displayHeight;
+        this.agrid.placeAtIndex(115,this.bg4);
+        Align.scaleToGameH(this.bg4,1,this);
+        this.bg4.y -= 3*this.bg4.displayHeight;
         this.agrid.placeAtIndex(170,this.car);
         Align.scaleToGameH(this.car,0.35,this)
 
         this.enemyGroup = this.add.group();
+        this.bgGroup = this.add.group();
+        this.bgGroup.add(this.bg1);
+        this.bgGroup.add(this.bg2);
+        this.bgGroup.add(this.bg3);
+        this.bgGroup.add(this.bg4);
 
         this.cam = this.cameras.main;
         this.GOtimer=0;
@@ -62,8 +100,8 @@ class gameplay extends Phaser.Scene
         this.rightBtn = null;
         if(isMobile != -1)
         {
-            this.leftBtn = this.add.image(0,0,'leftImg').setOrigin(0.5).setInteractive();
-            this.rightBtn = this.add.image(0,0,'rightImg').setOrigin(0.5).setInteractive();
+            this.leftBtn = this.add.image(0,0,'leftImg').setOrigin(0.5).setDepth(5).setInteractive();
+            this.rightBtn = this.add.image(0,0,'rightImg').setOrigin(0.5).setDepth(5).setInteractive();
 
             this.agrid.placeAtIndex(211,this.leftBtn);
             Align.scaleToGameH(this.leftBtn,0.15,this);
@@ -156,7 +194,7 @@ class gameplay extends Phaser.Scene
             if(CURR_SPEED < 2 * SCROLL_SPEED)
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
-                CURR_SPAWN_TIME -= 100;
+                CURR_SPAWN_TIME -= 150;
                 CURR_MOVE_SPEED += CAR_MOVE_SPEED*0.1;
             }
         }
@@ -186,13 +224,22 @@ class gameplay extends Phaser.Scene
                 }
             }
         }.bind(this));
+
+        this.bgGroup.children.each(function (b){
+            if(b!=null){
+                b.y -= CURR_SPEED/2;
+                if(b.y>this.cam.scrollY+this.cam.height + b.displayHeight/2){
+                    b.y-=4*b.displayHeight;
+                }
+            }
+        }.bind(this));
     }
 
     Move()
     {
         this.cam.scrollY -= CURR_SPEED;
         this.car.y -= CURR_SPEED;
-        this.bg.y -= CURR_SPEED;
+        //this.bg.y -= CURR_SPEED;
         this.scoreText.y -= CURR_SPEED;
         if(isMobile != -1)
         {
@@ -241,16 +288,28 @@ class gameplay extends Phaser.Scene
         if(this.spawnTimer >= CURR_SPAWN_TIME)
         {
             this.spawnTimer = 0;
-            var rng = Math.floor(Math.random()*Obstacles.length);
-            // console.log("spawn");
-            //var x = lanes[Math.floor(Math.random()*lanes.length)];
-            // console.log(x);
-            var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5);
-            enemy.setSensor(true);
-            Align.scaleToGameW(enemy,0.2,this);
-            enemy.x = Math.random()*config.width*0.75 + config.width*0.125;
+            var choice = Math.floor(Math.random()*100)
+            if(choice > 20)
+            {
 
-            this.enemyGroup.add(enemy);
+                var rng = Math.floor(Math.random()*Obstacles.length);
+                var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5);
+                enemy.setSensor(true);
+                Align.scaleToGameW(enemy,0.2,this);
+                enemy.x = Math.random()*config.width*0.75 + config.width*0.125;
+                
+                this.enemyGroup.add(enemy);
+            }
+            else
+            {
+                var rng = Math.floor(Math.random()*Boats.length);
+                enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true);
+                enemy.play(Boats[rng].animkey);
+                Align.scaleToGameH(enemy,0.3,this);
+                enemy.x = Math.random()*config.width*0.75 + config.width*0.125;
+                
+                this.enemyGroup.add(enemy);
+            }
         }
     }
 }

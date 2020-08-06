@@ -38,20 +38,40 @@ var config = {
 
 var Boats = [{
     name : "redboat",
-    playImg : "images/redboat.png",
+    playImg : "images/redboatSheet.png",
     gamekey : "redboatImg",
+    animkey:"redBoatRowing",
+    frameDetails:{
+        frameWidth:112.166,
+        frameHeight:573
+    }
 },{
     name : "blueboat",
-    playImg : "images/blueboat.png",
+    playImg : "images/blueboatSheet.png",
     gamekey : "blueboatImg",
+    animkey:"blueBoatRowing",
+    frameDetails:{
+        frameWidth:111,
+        frameHeight:572
+    }
 },{
     name : "orangeboat",
-    playImg : "images/orangeboat.png",
+    playImg : "images/orangeboatSheet.png",
     gamekey : "orangeboatImg",
+    animkey:"orangeBoatRowing",
+    frameDetails:{
+        frameWidth:111.166,
+        frameHeight:573
+    }
 },{
     name : "greenboat",
-    playImg : "images/greenboat.png",
+    playImg : "images/greenboatSheet.png",
     gamekey : "greenboatImg",
+    animkey:"greenBoatRowing",
+    frameDetails:{
+        frameWidth:110,
+        frameHeight:572
+    }
 }]
 
 var Obstacles = [{

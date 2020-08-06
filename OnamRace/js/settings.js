@@ -64,10 +64,10 @@ class settings extends Phaser.Scene
 
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg,1,this);
-        this.agrid.placeAtIndex(115,panel);
-        //Align.scaleToGameW(panel,0.75,this);
-        panel.displayWidth = 0.8*config.width;
-        panel.displayHeight = 0.75*config.height;
+        this.agrid.placeAtIndex(82,panel);
+        // Align.scaleToGameH(panel,0.9,this);
+        panel.displayWidth = 0.9*config.width;
+        panel.displayHeight = 0.9*config.height;
         this.agrid.placeAtIndex(71,musicOnBtn);
         Align.scaleToGameH(musicOnBtn,0.1,this);
         this.agrid.placeAtIndex(71,musicOffBtn);
@@ -107,7 +107,7 @@ class settings extends Phaser.Scene
             sfxOffBtn.setVisible(true);
         }
 
-        //this.agrid.showNumbers();
+        this.agrid.showNumbers();
 
     }
 }

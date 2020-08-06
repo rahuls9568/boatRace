@@ -28,8 +28,15 @@ class gameplay extends Phaser.Scene
         {
             this.load.image(Obstacles[i].gamekey,Obstacles[i].imgPath);
         }
-        this.load.image('leftImg','images/leftBtn.png');
-        this.load.image('rightImg','images/rightBtn.png');
+        for(var i = 0; i < Crowd.length; i++)
+        {
+            this.load.image(Crowd[i].gamekey, Crowd[i].playImg);
+        }
+        if(isMobile != -1)
+        {
+            this.load.image('leftImg','images/leftBtn.png');
+            this.load.image('rightImg','images/rightBtn.png');
+        }
     }
 
     create()
@@ -79,6 +86,8 @@ class gameplay extends Phaser.Scene
 
         this.enemyGroup = this.add.group();
         this.bgGroup = this.add.group();
+        this.crowdGroup = this.add.group();
+
         this.bgGroup.add(this.bg1);
         this.bgGroup.add(this.bg2);
         this.bgGroup.add(this.bg3);
@@ -89,6 +98,8 @@ class gameplay extends Phaser.Scene
         this.scoreTimer = 0;
         this.spawnTimer = 0;
         this.gameTimer = 0;
+        this.crowdtimer = 0;
+        this.isPrevLeft = false;
         this.isPaused = false;
         this.isGameOver = false;
 
@@ -172,6 +183,7 @@ class gameplay extends Phaser.Scene
             this.MoveCar();
             this.AddScore();
             this.speedIncrementer();
+            this.CrowdSpawner();
         }
         else if(this.isGameOver === true)
         {
@@ -185,6 +197,43 @@ class gameplay extends Phaser.Scene
             }
         }
     }
+
+    CrowdSpawner()
+    {
+        this.crowdtimer += game.loop.delta;
+        if(this.crowdtimer > 500)
+        {
+            this.crowdtimer = 0;
+            if(Math.random()*100 >= 65)
+            {
+                var rng = Math.floor(Math.random()*Crowd.length);
+                var crowdobj = this.add.image(0,0,Crowd[rng].gamekey).setOrigin(Crowd[rng].origin.x,Crowd[rng].origin.y);
+                if(this.isPrevLeft)
+                {
+                    crowdobj.setPosition(config.width*0.9,this.cam.scrollY-50);
+                    if(Crowd[rng].isFacingRight)
+                    {
+                        crowdobj.flipX = true;
+                        crowdobj.x += crowdobj.displayWidth;
+                    }
+                    this.isPrevLeft = false;
+                }
+                else
+                {
+                    crowdobj.setPosition(config.width*0.1,this.cam.scrollY-50);
+                    if(!Crowd[rng].isFacingRight)
+                    {
+                        crowdobj.flipX = true;
+                        crowdobj.x -= crowdobj.displayWidth;
+                    }
+                    this.isPrevLeft = true;
+                }
+                Align.scaleToGameH(crowdobj,0.2,this);    
+                this.crowdGroup.add(crowdobj);
+            }
+        }
+    }
+
     speedIncrementer()
     {
         this.gameTimer += game.loop.delta;
@@ -230,6 +279,14 @@ class gameplay extends Phaser.Scene
                 b.y -= CURR_SPEED/2;
                 if(b.y>this.cam.scrollY+this.cam.height + b.displayHeight/2){
                     b.y-=4*b.displayHeight;
+                }
+            }
+        }.bind(this));
+
+        this.crowdGroup.children.each(function (b) {
+            if (b!=null && b.active) {
+                if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
+                    this.crowdGroup.remove(b,true,true);
                 }
             }
         }.bind(this));

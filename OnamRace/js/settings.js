@@ -107,7 +107,7 @@ class settings extends Phaser.Scene
             sfxOffBtn.setVisible(true);
         }
 
-        //this.agrid.showNumbers();
+        this.agrid.showNumbers();
 
     }
 }

@@ -74,6 +74,32 @@ var Boats = [{
     }
 }]
 
+var Crowd = [{
+    name:"crowd1",
+    playImg:"images/crowd1.png",
+    gamekey:"crowd1Img",
+    isFacingRight:false,
+    origin:{x:0,y:0.5},
+},{
+    name:"crowd2",
+    playImg:"images/crowd2.png",
+    gamekey:"crowd2Img",
+    isFacingRight:false,
+    origin:{x:0,y:0.5},
+},{
+    name:"crowd3",
+    playImg:"images/crowd3.png",
+    gamekey:"crowd3Img",
+    isFacingRight:true,
+    origin:{x:1,y:0.5},
+},{
+    name:"crowd4",
+    playImg:"images/crowd4.png",
+    gamekey:"crowd4Img",
+    isFacingRight:true,
+    origin:{x:1,y:0.5},
+},]
+
 var Obstacles = [{
     name:"obs1",
     imgPath :"images/obstacle1.png",

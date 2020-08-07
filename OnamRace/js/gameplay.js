@@ -1,5 +1,5 @@
 const CAR_MOVE_SPEED = 3, SCROLL_SPEED = 4;
-const ENEMY_SPAWN_TIME = 3000;
+const ENEMY_SPAWN_TIME = 2500;
 var CURR_SPEED = 0;
 var CURR_SPAWN_TIME = 0;
 var isMoveRight = false, isMoveLeft = false;
@@ -318,11 +318,11 @@ class gameplay extends Phaser.Scene
     speedIncrementer()
     {
         this.gameTimer += game.loop.delta;
-        if(this.gameTimer > 7500)
+        if(this.gameTimer > 5000)
         {
             this.gameTimer = 0;
             
-            if(CURR_SPEED < 3 * SCROLL_SPEED)
+            if(true||CURR_SPEED < 3 * SCROLL_SPEED)
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
                 // CURR_SPAWN_TIME -= 150;

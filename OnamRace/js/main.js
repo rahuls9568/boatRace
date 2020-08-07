@@ -17,7 +17,7 @@ var config = {
     width: w,
     height: h,
     parent: 'phaser-game',
-    scene: [mainmenu, gameplay, gameover, instruction, settings, about],
+    scene: [mainmenu, gameplay, gameover, instruction, settings, about, shop],
     physics: {
         default: 'matter',
         matter: {

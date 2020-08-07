@@ -14,6 +14,7 @@ class mainmenu extends Phaser.Scene
         this.load.image("menubg", "images/bg1.png");
         this.load.image("playBtn","images/playBtn.png");
         this.load.image("insBtn","images/htpBtn.png");
+        this.load.image("shopBtn","images/shopBtn.png");
         // this.load.image("settingBtn","images/settingBtn.png");
         this.load.image("atrBtn","images/atrBtn.png");
         this.load.image("gameName","images/gameName.png");
@@ -27,6 +28,7 @@ class mainmenu extends Phaser.Scene
         var playBtn = this.add.image(config.width/2,0,'playBtn').setOrigin(0.5).setInteractive();
         var insBtn = this.add.image(config.width/2,0,'insBtn').setOrigin(0.5).setInteractive()//.setVisible(false);
         var settingBtn = this.add.image(config.width/2,0,'atrBtn').setOrigin(0.5).setInteractive();
+        var shopBtn = this.add.image(config.width/2,0,'shopBtn').setOrigin(0.5).setInteractive();
 		//this.carImage = this.add.image(config.width/2,config.height/2 - 50,currentCar.menukey).setOrigin(0.5);
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
 
@@ -36,18 +38,28 @@ class mainmenu extends Phaser.Scene
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");
+            shopBtn.removeListener("pointerdown");
         },this);
 		settingBtn.on("pointerdown",function(pointer){
             game.scene.start("about");
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");
+            shopBtn.removeListener("pointerdown");
         },this)
 		insBtn.on("pointerdown",function(pointer){
             game.scene.start("instruction");
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");
+            shopBtn.removeListener("pointerdown");
+        },this)
+        shopBtn.on("pointerdown",function(pointer){
+            game.scene.start("shop");
+            playBtn.removeListener("pointerdown");
+            insBtn.removeListener("pointerdown");
+            settingBtn.removeListener("pointerdown");
+            shopBtn.removeListener("pointerdown");
         },this)
         
         this.agrid.placeAtIndex(115,bg);
@@ -60,6 +72,8 @@ class mainmenu extends Phaser.Scene
         Align.scaleToGameH(insBtn,0.075,this)
         this.agrid.placeAtIndex(181,settingBtn)
         Align.scaleToGameH(settingBtn,0.075,this)
+        this.agrid.placeAtIndex(214,shopBtn)
+        Align.scaleToGameH(shopBtn,0.075,this)
 	    
         //this.agrid.showNumbers();
 

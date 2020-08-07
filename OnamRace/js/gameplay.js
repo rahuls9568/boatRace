@@ -1,5 +1,5 @@
-const CAR_MOVE_SPEED = 2.75, SCROLL_SPEED = 3.5;
-const ENEMY_SPAWN_TIME = 2750;
+const CAR_MOVE_SPEED = 3, SCROLL_SPEED = 4;
+const ENEMY_SPAWN_TIME = 3000;
 var CURR_SPEED = 0;
 var CURR_SPAWN_TIME = 0;
 var isMoveRight = false, isMoveLeft = false;
@@ -40,12 +40,23 @@ class gameplay extends Phaser.Scene
 
         this.load.audio('rowbgm','audio/Background sound.mp3');
         this.load.audio('rowIns','audio/Boat instructions.mp3');
+
+        this.load.image('MUSICOnImg','images/icon_sound_music.png');
+        this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
     }
 
     create()
     {
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
 
+        this.rowIns = this.sound.add('rowIns',{
+            mute:false,
+            volume:1,
+            rate:1,
+            seek:0,
+            loop:true,
+            delay:0
+        });
         this.rowBGM = this.sound.add('rowbgm', {
 	        mute: false,
 	        volume: 0.75,
@@ -54,13 +65,17 @@ class gameplay extends Phaser.Scene
 	        loop: true,
 	        delay: 0
 	    });
+        this.rowBGM.play();
+        this.rowIns.play();
 	    if(musicFlag)
         {
-            this.rowBGM.play();
+            this.rowBGM.resume();
+            this.rowIns.resume();
         }
         else
         {
             this.rowBGM.pause();
+            this.rowIns.pause();
         }
 
         for(var i = 0; i < Boats.length; i++)
@@ -82,6 +97,10 @@ class gameplay extends Phaser.Scene
         this.bg2 = this.add.image(config.width/2,config.height/2,'gamebg2').setOrigin(0.5);
         this.bg3 = this.add.image(config.width/2,config.height/2,'gamebg3').setOrigin(0.5);
         this.bg4 = this.add.image(config.width/2,config.height/2,'gamebg4').setOrigin(0.5);
+
+        this.musicOnBtn = this.add.image(config.width,0,'MUSICOnImg').setOrigin(1,0).setInteractive().setDepth(5);
+        this.musicOffBtn = this.add.image(config.width,0,'MUSICOffImg').setOrigin(1,0).setInteractive().setDepth(5);
+
         this.car = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
         this.car.setBody(currentBoat.body);
         this.car.play(currentBoat.animkey);
@@ -113,6 +132,11 @@ class gameplay extends Phaser.Scene
         this.bg4.y -= 3*this.bg4.displayHeight;
         this.agrid.placeAtIndex(170,this.car);
         Align.scaleToGameH(this.car,0.35,this)
+        //this.agrid.placeAtIndex(10,this.musicOnBtn);
+        Align.scaleToGameH(this.musicOnBtn,0.075,this);
+        //this.agrid.placeAtIndex(10,this.musicOffBtn);
+        Align.scaleToGameH(this.musicOffBtn,0.075,this);
+
 
         this.enemyGroup = this.add.group();
         this.aiboatGroup = this.add.group();
@@ -140,6 +164,30 @@ class gameplay extends Phaser.Scene
 
         this.leftBtn = null;
         this.rightBtn = null;
+        this.musicOnBtn.on("pointerdown",function(pointer){
+            this.musicOffBtn.setVisible(true);
+            this.musicOnBtn.setVisible(false);
+            musicFlag = false;
+            this.sound.pauseAll();
+        },this)
+        this.musicOffBtn.on("pointerdown",function(pointer){
+            this.musicOffBtn.setVisible(false);
+            this.musicOnBtn.setVisible(true);
+            musicFlag = true;
+            this.sound.resumeAll();
+        },this)
+        if(musicFlag)
+        {
+            //console.log("music true");
+            this.musicOnBtn.setVisible(true);
+            this.musicOffBtn.setVisible(false);
+        }
+        else
+        {
+            // console.log("music false");
+            this.musicOnBtn.setVisible(false);
+            this.musicOffBtn.setVisible(true);
+        }
         if(isMobile != -1)
         {
             this.leftBtn = this.add.image(0,0,'leftImg').setOrigin(0.5).setDepth(5).setInteractive();
@@ -270,16 +318,16 @@ class gameplay extends Phaser.Scene
     speedIncrementer()
     {
         this.gameTimer += game.loop.delta;
-        if(this.gameTimer > 17500)
+        if(this.gameTimer > 7500)
         {
             this.gameTimer = 0;
-            if(musicFlag)
-                this.sound.play('rowIns');
-            if(CURR_SPEED < 2 * SCROLL_SPEED)
+            
+            if(CURR_SPEED < 3 * SCROLL_SPEED)
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
-                CURR_SPAWN_TIME -= 150;
+                // CURR_SPAWN_TIME -= 150;
                 CURR_MOVE_SPEED += CAR_MOVE_SPEED*0.1;
+                //console.log(CURR_SPEED + "\n"+CURR_MOVE_SPEED);
             }
         }
 
@@ -303,6 +351,7 @@ class gameplay extends Phaser.Scene
     {
         this.enemyGroup.children.each(function (b) {
             if (b!=null && b.active) {
+                b.y-=CURR_SPEED/2;
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
                     this.enemyGroup.remove(b,true,true);
                 }
@@ -311,7 +360,7 @@ class gameplay extends Phaser.Scene
 
         this.aiboatGroup.children.each(function (b) {
             if (b!=null && b.active) {
-                b.y+=CURR_SPEED*0.25;
+                b.y-=CURR_SPEED/4;
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
                     this.aiboatGroup.remove(b,true,true);
                 }
@@ -348,6 +397,8 @@ class gameplay extends Phaser.Scene
             this.leftBtn.y -= CURR_SPEED;
             this.rightBtn.y -= CURR_SPEED;
         }
+        this.musicOffBtn.y-=CURR_SPEED;
+        this.musicOnBtn.y-=CURR_SPEED;
     }
 
     MoveCar()

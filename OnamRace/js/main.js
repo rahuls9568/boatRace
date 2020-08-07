@@ -124,6 +124,12 @@ var Crowd = [{
     gamekey:"crowd5Img",
     isFacingRight:null,
     origin:{x:0.5,y:0.5},
+},{
+    name:"crowd6",
+    playImg:"images/crowd6.png",
+    gamekey:"crowd6Img",
+    isFacingRight:true,
+    origin:{x:1,y:0.5},
 }]
 
 var Obstacles = [{

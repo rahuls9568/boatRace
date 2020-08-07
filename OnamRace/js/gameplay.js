@@ -225,6 +225,7 @@ class gameplay extends Phaser.Scene
                 scoreManager.SetHighScore();
                 this.isGameOver = null;
                 this.rowBGM.destroy();
+                this.sound.stopAll();
                 game.scene.start("gameover");
             }
         }
@@ -269,7 +270,7 @@ class gameplay extends Phaser.Scene
     speedIncrementer()
     {
         this.gameTimer += game.loop.delta;
-        if(this.gameTimer > 10000)
+        if(this.gameTimer > 17500)
         {
             this.gameTimer = 0;
             if(musicFlag)
@@ -291,7 +292,7 @@ class gameplay extends Phaser.Scene
         {
             this.scoreTimer = 0;
             // console.log("before    "+scoreManager.GetScore());
-            scoreManager.AddScore(1);
+            scoreManager.AddScore(10);
             // console.log("after     "+scoreManager.GetScore());
             this.scoreText.setText("Score : "+scoreManager.GetScore());
 
@@ -310,7 +311,7 @@ class gameplay extends Phaser.Scene
 
         this.aiboatGroup.children.each(function (b) {
             if (b!=null && b.active) {
-                b.y-=CURR_SPEED*0.5;
+                b.y+=CURR_SPEED*0.25;
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
                     this.aiboatGroup.remove(b,true,true);
                 }
@@ -328,6 +329,7 @@ class gameplay extends Phaser.Scene
 
         this.crowdGroup.children.each(function (b) {
             if (b!=null && b.active) {
+                b.y-=CURR_SPEED/2;
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
                     this.crowdGroup.remove(b,true,true);
                 }

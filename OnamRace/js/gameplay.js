@@ -37,6 +37,7 @@ class gameplay extends Phaser.Scene
             this.load.image('leftImg','images/leftBtn.png');
             this.load.image('rightImg','images/rightBtn.png');
         }
+        this.load.image(currentBoat.deadKey,currentBoat.deadPath);
 
         this.load.audio('rowbgm','audio/Background sound.mp3');
         this.load.audio('rowIns','audio/Boat instructions.mp3');
@@ -266,8 +267,9 @@ class gameplay extends Phaser.Scene
         }
         else if(this.isGameOver === true)
         {
-            this.anims.pauseAll();
             this.GOtimer += game.loop.delta;
+            this.anims.pauseAll();
+            this.car.setFrame(6)
             if(this.GOtimer >= 2500)
             {
                 scoreManager.SetHighScore();
@@ -318,7 +320,7 @@ class gameplay extends Phaser.Scene
     speedIncrementer()
     {
         this.gameTimer += game.loop.delta;
-        if(this.gameTimer > 5000)
+        if(this.gameTimer > 7500)
         {
             this.gameTimer = 0;
             
@@ -406,17 +408,34 @@ class gameplay extends Phaser.Scene
         if(isMoveRight)
         {
             if(this.car.x < config.width*0.75)
+            {
                 this.car.x += CURR_MOVE_SPEED;
+            }
             else
+            {
+                this.SpawnDeadBoat()
                 this.isGameOver = true;
+            }
         }
         else if(isMoveLeft)
         {
             if(this.car.x > config.width*0.25)
+            {
                 this.car.x -= CURR_MOVE_SPEED;
+            }    
             else
+            {
+                this.SpawnDeadBoat();
                 this.isGameOver = true;
+            }
         }
+    }
+
+    SpawnDeadBoat()
+    {
+        this.car.setVisible(false);
+        var deadBoat = this.add.image(this.car.x,this.car.y,currentBoat.deadKey).setOrigin(0.5);
+        Align.scaleToGameH(deadBoat,0.3,this);
     }
 
     CheckCarEnemyCollision(bodyA, bodyB) {
@@ -433,7 +452,8 @@ class gameplay extends Phaser.Scene
             }
             if (enemy != null) {
                 this.isGameOver = true;
-                //this.car.setVisible(false);
+                
+                this.SpawnDeadBoat();
                 //var explode = this.add.sprite(this.car.x,this.car.y,'explosion',0).setOrigin(0.5).setScale(0.3);
                 //explode.play('blastAnim');
             }

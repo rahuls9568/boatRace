@@ -12,6 +12,7 @@
     <script type="text/javascript" src="js/util/formUtil.js"></script>
     <script src="js/Score.js"></script>
     <script src="js/instruction.js"></script>
+    <script src="js/about.js"></script>
     <script src="js/gameplay.js"></script>
     <script src="js/gameover.js"></script>
     <script src="js/mainmenu.js"></script>
@@ -29,21 +30,22 @@
             border: 0px;
         }
     </style>
-    <!-- <style media='screen' type='text/css'>
+    <style media='screen' type='text/css'>
         @font-face {
           font-family: myFont;
-          src: url('fonts/Carton_Six.ttf');
+          src: url('fonts/GochiHand-Regular.ttf');
           font-weight:400;
           font-weight:normal;
         }
-  </style> -->
+  </style>
 </head>
 <body>
     <!-- <div style="text-align:center;"> -->
         <div id ="phaser-game">
         </div>
     <!-- </div> -->
-    <!-- <div style="font-family:myFont; position:absolute; left:-1000px; visibility:hidden;">.</div> -->
+    <div style="font-family:myFont; position:absolute; left:-1000px; visibility:hidden;">.</div>
     
 </body>
 </html>
+

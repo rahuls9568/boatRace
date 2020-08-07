@@ -17,11 +17,11 @@ var config = {
     width: w,
     height: h,
     parent: 'phaser-game',
-    scene: [mainmenu, gameplay, gameover, instruction, settings],
+    scene: [mainmenu, gameplay, gameover, instruction, settings, about],
     physics: {
         default: 'matter',
         matter: {
-            debug: false,
+            debug: true,
             gravity: {
                 x: 0,
                 y: 0
@@ -44,6 +44,11 @@ var Boats = [{
     frameDetails:{
         frameWidth:112.166,
         frameHeight:573
+    },
+    body:{
+        type:'rectangle',
+        width:50,
+        height:450,
     }
 },{
     name : "blueboat",
@@ -53,6 +58,11 @@ var Boats = [{
     frameDetails:{
         frameWidth:111,
         frameHeight:572
+    },
+    body:{
+        type:'rectangle',
+        width:50,
+        height:450,
     }
 },{
     name : "orangeboat",
@@ -62,6 +72,11 @@ var Boats = [{
     frameDetails:{
         frameWidth:111.166,
         frameHeight:573
+    },
+    body:{
+        type:'rectangle',
+        width:50,
+        height:450,
     }
 },{
     name : "greenboat",
@@ -71,6 +86,11 @@ var Boats = [{
     frameDetails:{
         frameWidth:110,
         frameHeight:572
+    },
+    body:{
+        type:'rectangle',
+        width:50,
+        height:450,
     }
 }]
 
@@ -98,7 +118,13 @@ var Crowd = [{
     gamekey:"crowd4Img",
     isFacingRight:true,
     origin:{x:1,y:0.5},
-},]
+},{
+    name:"crowd5",
+    playImg:"images/crowd5.png",
+    gamekey:"crowd5Img",
+    isFacingRight:null,
+    origin:{x:0.5,y:0.5},
+}]
 
 var Obstacles = [{
     name:"obs1",
@@ -124,11 +150,11 @@ var Obstacles = [{
     name:"obs6",
     imgPath :"images/obstacle6.png",
     gamekey:"obs6Img",
-},{
-    name:"7",
+}/*,{
+    name:"obs7",
     imgPath :"images/obstacle7.png",
     gamekey:"obs7Img",
-},{
+}*/,{
     name:"obs8",
     imgPath :"images/obstacle8.png",
     gamekey:"obs8Img",

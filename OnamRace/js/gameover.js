@@ -9,7 +9,7 @@ class gameover extends Phaser.Scene
     {
         this.scene.bringToTop();
         this.load.image('GOBG','images/bg1.png');
-        this.load.image("GOMenuBtn",'images/menuBtn.png');
+        this.load.image("GOMenuBtn",'images/playBtn.png');
         //this.load.image('GOpanel','images/panel.png');
     }
 
@@ -20,8 +20,8 @@ class gameover extends Phaser.Scene
         var menubtn = this.add.image(config.width/2,0,'GOMenuBtn').setOrigin(0.5).setInteractive();
         //this.add.image(config.width/2,config.height/2,"GOpanel").setOrigin(0.5);
 
-        this.add.text(config.width/2,config.height/2 - 25,"",{font:"bold 40px Arial",fill:"#000000",align:"center"}).setOrigin(0.5).setText("Score : " + scoreManager.GetScore());
-        this.add.text(config.width/2,config.height/2 + 25,"",{font:"bold 40px Arial",fill:"#000000",align:"center"}).setOrigin(0.5).setText("HighScore : "+scoreManager.GetHighScore());
+        this.add.text(config.width/2,config.height/2 - 25,"",{fontFamily:"myFont",fontSize:40,fill:"#000000",align:"center"}).setOrigin(0.5).setText("Score : " + scoreManager.GetScore());
+        this.add.text(config.width/2,config.height/2 + 25,"",{fontFamily:"myFont",fontSize:40,fill:"#000000",align:"center"}).setOrigin(0.5).setText("HighScore : "+scoreManager.GetHighScore());
         
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
 

@@ -1,5 +1,5 @@
-const CAR_MOVE_SPEED = 2.5, SCROLL_SPEED = 2;
-const ENEMY_SPAWN_TIME = 3500;
+const CAR_MOVE_SPEED = 2.75, SCROLL_SPEED = 3.5;
+const ENEMY_SPAWN_TIME = 2750;
 var CURR_SPEED = 0;
 var CURR_SPAWN_TIME = 0;
 var isMoveRight = false, isMoveLeft = false;
@@ -37,11 +37,31 @@ class gameplay extends Phaser.Scene
             this.load.image('leftImg','images/leftBtn.png');
             this.load.image('rightImg','images/rightBtn.png');
         }
+
+        this.load.audio('rowbgm','audio/Background sound.mp3');
+        this.load.audio('rowIns','audio/Boat instructions.mp3');
     }
 
     create()
     {
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
+
+        this.rowBGM = this.sound.add('rowbgm', {
+	        mute: false,
+	        volume: 0.75,
+	        rate: 1,
+	        seek: 0,
+	        loop: true,
+	        delay: 0
+	    });
+	    if(musicFlag)
+        {
+            this.rowBGM.play();
+        }
+        else
+        {
+            this.rowBGM.pause();
+        }
 
         for(var i = 0; i < Boats.length; i++)
         {
@@ -55,6 +75,7 @@ class gameplay extends Phaser.Scene
                 })
             });
         }
+        this.anims.resumeAll();
 
         scoreManager.ResetScore();
         this.bg1 = this.add.image(config.width/2,config.height/2,'gamebg1').setOrigin(0.5);
@@ -62,29 +83,39 @@ class gameplay extends Phaser.Scene
         this.bg3 = this.add.image(config.width/2,config.height/2,'gamebg3').setOrigin(0.5);
         this.bg4 = this.add.image(config.width/2,config.height/2,'gamebg4').setOrigin(0.5);
         this.car = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
+        this.car.setBody(currentBoat.body);
         this.car.play(currentBoat.animkey);
-        this.scoreText = this.add.text(0,0,"Score : 0",{font : "bold 30px Arial",fill:"#000000",align:"left"}).setOrigin(0);
+        this.scoreText = this.add.text(0,0,"Score : 0",{fontFamily:"myFont",fontSize:30,fill:"#000000",align:"left"}).setOrigin(0);
         
         CURR_SPEED = SCROLL_SPEED;
         CURR_SPAWN_TIME = ENEMY_SPAWN_TIME;
         CURR_MOVE_SPEED = CAR_MOVE_SPEED;
         
         this.agrid.placeAtIndex(115,this.bg1);
-        Align.scaleToGameH(this.bg1,1,this);
+        // Align.scaleToGameH(this.bg1,1,this);
+        this.bg1.displayWidth = config.width;
+        this.bg1.displayHeight = config.height;
         this.bg1.y -= 0*this.bg1.displayHeight;
         this.agrid.placeAtIndex(115,this.bg2);
-        Align.scaleToGameH(this.bg2,1,this);
+        // Align.scaleToGameH(this.bg2,1,this);
+        this.bg2.displayWidth = config.width;
+        this.bg2.displayHeight = config.height;
         this.bg2.y -= 1*this.bg2.displayHeight;
         this.agrid.placeAtIndex(115,this.bg3);
-        Align.scaleToGameH(this.bg3,1,this);
+        // Align.scaleToGameH(this.bg3,1,this);
+        this.bg3.displayWidth = config.width;
+        this.bg3.displayHeight = config.height;
         this.bg3.y -= 2*this.bg3.displayHeight;
         this.agrid.placeAtIndex(115,this.bg4);
-        Align.scaleToGameH(this.bg4,1,this);
+        // Align.scaleToGameH(this.bg4,1,this);
+        this.bg4.displayWidth = config.width;
+        this.bg4.displayHeight = config.height;
         this.bg4.y -= 3*this.bg4.displayHeight;
         this.agrid.placeAtIndex(170,this.car);
         Align.scaleToGameH(this.car,0.35,this)
 
         this.enemyGroup = this.add.group();
+        this.aiboatGroup = this.add.group();
         this.bgGroup = this.add.group();
         this.crowdGroup = this.add.group();
 
@@ -187,12 +218,13 @@ class gameplay extends Phaser.Scene
         }
         else if(this.isGameOver === true)
         {
+            this.anims.pauseAll();
             this.GOtimer += game.loop.delta;
-            if(this.GOtimer >= 3000)
+            if(this.GOtimer >= 2500)
             {
                 scoreManager.SetHighScore();
                 this.isGameOver = null;
-                
+                this.rowBGM.destroy();
                 game.scene.start("gameover");
             }
         }
@@ -204,14 +236,14 @@ class gameplay extends Phaser.Scene
         if(this.crowdtimer > 500)
         {
             this.crowdtimer = 0;
-            if(Math.random()*100 >= 65)
+            if(Math.random()*100 >= 40)
             {
                 var rng = Math.floor(Math.random()*Crowd.length);
                 var crowdobj = this.add.image(0,0,Crowd[rng].gamekey).setOrigin(Crowd[rng].origin.x,Crowd[rng].origin.y);
                 if(this.isPrevLeft)
                 {
-                    crowdobj.setPosition(config.width*0.9,this.cam.scrollY-50);
-                    if(Crowd[rng].isFacingRight)
+                    crowdobj.setPosition(config.width*0.85,this.cam.scrollY-50);
+                    if(Crowd[rng].isFacingRight===true)
                     {
                         crowdobj.flipX = true;
                         crowdobj.x += crowdobj.displayWidth;
@@ -220,8 +252,8 @@ class gameplay extends Phaser.Scene
                 }
                 else
                 {
-                    crowdobj.setPosition(config.width*0.1,this.cam.scrollY-50);
-                    if(!Crowd[rng].isFacingRight)
+                    crowdobj.setPosition(config.width*0.15,this.cam.scrollY-50);
+                    if(Crowd[rng].isFacingRight === false)
                     {
                         crowdobj.flipX = true;
                         crowdobj.x -= crowdobj.displayWidth;
@@ -240,6 +272,8 @@ class gameplay extends Phaser.Scene
         if(this.gameTimer > 10000)
         {
             this.gameTimer = 0;
+            if(musicFlag)
+                this.sound.play('rowIns');
             if(CURR_SPEED < 2 * SCROLL_SPEED)
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
@@ -270,6 +304,15 @@ class gameplay extends Phaser.Scene
             if (b!=null && b.active) {
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
                     this.enemyGroup.remove(b,true,true);
+                }
+            }
+        }.bind(this));
+
+        this.aiboatGroup.children.each(function (b) {
+            if (b!=null && b.active) {
+                b.y-=CURR_SPEED*0.5;
+                if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
+                    this.aiboatGroup.remove(b,true,true);
                 }
             }
         }.bind(this));
@@ -309,13 +352,17 @@ class gameplay extends Phaser.Scene
     {
         if(isMoveRight)
         {
-            if(this.car.x < config.width-config.width*0.125)
+            if(this.car.x < config.width*0.75)
                 this.car.x += CURR_MOVE_SPEED;
+            else
+                this.isGameOver = true;
         }
         else if(isMoveLeft)
         {
-            if(this.car.x > config.width*0.125)
+            if(this.car.x > config.width*0.25)
                 this.car.x -= CURR_MOVE_SPEED;
+            else
+                this.isGameOver = true;
         }
     }
 
@@ -324,10 +371,10 @@ class gameplay extends Phaser.Scene
             return;
         var enemy;
         if (bodyA.active && bodyA.visible && bodyB.active && bodyB.visible) {
-            if (this.enemyGroup.contains(bodyA) && this.car == bodyB) {
+            if ((this.enemyGroup.contains(bodyA)|| this.aiboatGroup.contains(bodyA)) && this.car == bodyB) {
                 enemy = bodyA
                 // console.log("bullet hit orc");
-            } else if (this.car == bodyA && this.enemyGroup.contains(bodyB)) {
+            } else if (this.car == bodyA && (this.enemyGroup.contains(bodyB) || this.aiboatGroup.contains(bodyB))) {
                 enemy = bodyB
                 //console.log("bullet hit orc 2");
             }
@@ -353,7 +400,7 @@ class gameplay extends Phaser.Scene
                 var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5);
                 enemy.setSensor(true);
                 Align.scaleToGameW(enemy,0.2,this);
-                enemy.x = Math.random()*config.width*0.75 + config.width*0.125;
+                enemy.x = Math.random()*config.width*0.5 + config.width*0.25;
                 
                 this.enemyGroup.add(enemy);
             }
@@ -361,11 +408,12 @@ class gameplay extends Phaser.Scene
             {
                 var rng = Math.floor(Math.random()*Boats.length);
                 enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true);
+                enemy.setBody(Boats[rng].body);
                 enemy.play(Boats[rng].animkey);
                 Align.scaleToGameH(enemy,0.3,this);
-                enemy.x = Math.random()*config.width*0.75 + config.width*0.125;
+                enemy.x = Math.random()*config.width*0.5 + config.width*0.25;
                 
-                this.enemyGroup.add(enemy);
+                this.aiboatGroup.add(enemy);
             }
         }
     }

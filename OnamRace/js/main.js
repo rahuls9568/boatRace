@@ -38,7 +38,9 @@ var config = {
 
 var Boats = [{
     name : "redboat",
+    deadPath:"images/RedBoat_7.png",
     playImg : "images/redboatSheet.png",
+    deadKey:"redBoatdead",
     gamekey : "redboatImg",
     animkey:"redBoatRowing",
     frameDetails:{
@@ -52,7 +54,9 @@ var Boats = [{
     }
 },{
     name : "blueboat",
+    deadPath:"images/BlueBoat_7.png",
     playImg : "images/blueboatSheet.png",
+    deadKey:"blueBoatdead",
     gamekey : "blueboatImg",
     animkey:"blueBoatRowing",
     frameDetails:{
@@ -66,7 +70,9 @@ var Boats = [{
     }
 },{
     name : "orangeboat",
+    deadPath:"images/OrangeBoat_7.png",
     playImg : "images/orangeboatSheet.png",
+    deadKey:"orangeBoatdead",
     gamekey : "orangeboatImg",
     animkey:"orangeBoatRowing",
     frameDetails:{
@@ -80,7 +86,9 @@ var Boats = [{
     }
 },{
     name : "greenboat",
+    deadPath:"images/GreenBoat_7.png",
     playImg : "images/greenboatSheet.png",
+    deadKey:"greenBoatdead",
     gamekey : "greenboatImg",
     animkey:"greenBoatRowing",
     frameDetails:{

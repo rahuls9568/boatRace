@@ -85,7 +85,7 @@ class gameplay extends Phaser.Scene
         this.car = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
         this.car.setBody(currentBoat.body);
         this.car.play(currentBoat.animkey);
-        this.scoreText = this.add.text(0,0,"Score : 0",{fontFamily:"myFont",fontSize:30,fill:"#000000",align:"left"}).setOrigin(0);
+        this.scoreText = this.add.text(0,0,"Score : 0",{fontFamily:"myFont",fontSize:30,fill:"#000000",align:"left"}).setOrigin(0).setDepth(10);
         
         CURR_SPEED = SCROLL_SPEED;
         CURR_SPAWN_TIME = ENEMY_SPAWN_TIME;

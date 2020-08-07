@@ -240,7 +240,7 @@ class gameplay extends Phaser.Scene
             if(Math.random()*100 >= 40)
             {
                 var rng = Math.floor(Math.random()*Crowd.length);
-                var crowdobj = this.add.image(0,0,Crowd[rng].gamekey).setOrigin(Crowd[rng].origin.x,Crowd[rng].origin.y);
+                var crowdobj = this.add.image(0,0,Crowd[rng].gamekey).setOrigin(Crowd[rng].origin.x,Crowd[rng].origin.y).setDepth(2);
                 if(this.isPrevLeft)
                 {
                     crowdobj.setPosition(config.width*0.85,this.cam.scrollY-50);
@@ -399,17 +399,17 @@ class gameplay extends Phaser.Scene
             {
 
                 var rng = Math.floor(Math.random()*Obstacles.length);
-                var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5);
+                var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5).setDepth(1);
                 enemy.setSensor(true);
                 Align.scaleToGameW(enemy,0.2,this);
-                enemy.x = Math.random()*config.width*0.5 + config.width*0.25;
+                enemy.x = Math.random()*config.width*0.35 + config.width*0.35;
                 
                 this.enemyGroup.add(enemy);
             }
             else
             {
                 var rng = Math.floor(Math.random()*Boats.length);
-                enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true);
+                enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true).setDepth(1);
                 enemy.setBody(Boats[rng].body);
                 enemy.play(Boats[rng].animkey);
                 Align.scaleToGameH(enemy,0.3,this);

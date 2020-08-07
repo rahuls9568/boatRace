@@ -14,6 +14,8 @@ class instruction extends Phaser.Scene
         this.load.image("playBtn","images/playBtn.png");
         this.load.image('howToPlay','images/How.png');
         this.load.image('closeBtn','images/close.png');
+        this.load.image('MUSICOnImg','images/icon_sound_music.png');
+        this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
     }
 
     create()
@@ -48,6 +50,38 @@ class instruction extends Phaser.Scene
         Align.scaleToGameH(playBtn,0.1,this);
         this.agrid.placeAtIndex(65,closeBtn);
         Align.scaleToGameW(closeBtn,0.15,this);
+
+        var musicOnBtn = this.add.image(config.width,0,'MUSICOnImg').setOrigin(1,0).setInteractive();
+        var musicOffBtn = this.add.image(config.width,0,'MUSICOffImg').setOrigin(1,0).setInteractive();
+        musicOnBtn.on("pointerdown",function(pointer){
+            musicOffBtn.setVisible(true);
+            musicOnBtn.setVisible(false);
+            musicFlag = false;
+            this.sound.pauseAll();
+        },this)
+        musicOffBtn.on("pointerdown",function(pointer){
+            musicOffBtn.setVisible(false);
+            musicOnBtn.setVisible(true);
+            musicFlag = true;
+            this.sound.resumeAll();
+        },this)
+        //this.agrid.placeAtIndex(10,musicOnBtn);
+        Align.scaleToGameH(musicOnBtn,0.075,this);
+        //this.agrid.placeAtIndex(10,musicOffBtn);
+        Align.scaleToGameH(musicOffBtn,0.075,this);
+
+        if(musicFlag)
+        {
+            //console.log("music true");
+            musicOnBtn.setVisible(true);
+            musicOffBtn.setVisible(false);
+        }
+        else
+        {
+            // console.log("music false");
+            musicOnBtn.setVisible(false);
+            musicOffBtn.setVisible(true);
+        }
 	    
         //this.agrid.showNumbers();
 

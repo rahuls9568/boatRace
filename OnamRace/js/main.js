@@ -108,36 +108,49 @@ var Crowd = [{
     gamekey:"crowd1Img",
     isFacingRight:false,
     origin:{x:0,y:0.5},
+    scalePerc:0.2,
 },{
     name:"crowd2",
     playImg:"images/crowd2.png",
     gamekey:"crowd2Img",
     isFacingRight:false,
     origin:{x:0,y:0.5},
+    scalePerc:0.2,
 },{
     name:"crowd3",
     playImg:"images/crowd3.png",
     gamekey:"crowd3Img",
     isFacingRight:true,
     origin:{x:1,y:0.5},
+    scalePerc:0.2,
 },{
     name:"crowd4",
     playImg:"images/crowd4.png",
     gamekey:"crowd4Img",
     isFacingRight:true,
     origin:{x:1,y:0.5},
+    scalePerc:0.2,
 },{
     name:"crowd5",
     playImg:"images/crowd5.png",
     gamekey:"crowd5Img",
     isFacingRight:null,
     origin:{x:0.5,y:0.5},
+    scalePerc:0.2,
 },{
     name:"crowd6",
     playImg:"images/crowd6.png",
     gamekey:"crowd6Img",
     isFacingRight:true,
     origin:{x:1,y:0.5},
+    scalePerc:0.2,
+},{
+    name:"crowd7",
+    playImg:"images/crowd7.png",
+    gamekey:"crowd7Img",
+    isFacingRight:false,
+    origin:{x:0,y:0.5},
+    scalePerc:0.1,
 }]
 
 var Obstacles = [{

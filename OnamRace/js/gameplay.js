@@ -162,6 +162,7 @@ class gameplay extends Phaser.Scene
 
         this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
             this.CheckCarEnemyCollision(bodyA.gameObject, bodyB.gameObject);
+            this.CheckAIBoatRockCollision(bodyA.gameObject,bodyB.gameObject);
         }, this);
 
         this.leftBtn = null;
@@ -293,6 +294,7 @@ class gameplay extends Phaser.Scene
             {
                 var rng = Math.floor(Math.random()*Crowd.length);
                 var crowdobj = this.add.image(0,0,Crowd[rng].gamekey).setOrigin(Crowd[rng].origin.x,Crowd[rng].origin.y).setDepth(2);
+                
                 if(this.isPrevLeft)
                 {
                     crowdobj.setPosition(config.width*0.85,this.cam.scrollY-50);
@@ -313,7 +315,7 @@ class gameplay extends Phaser.Scene
                     }
                     this.isPrevLeft = true;
                 }
-                Align.scaleToGameH(crowdobj,0.2,this);    
+                Align.scaleToGameH(crowdobj,Crowd[rng].scalePerc,this);    
                 this.crowdGroup.add(crowdobj);
             }
         }
@@ -321,20 +323,6 @@ class gameplay extends Phaser.Scene
 
     DetectAIRockCollision()
     {
-        // this.aiboatGroup.children.each(function(b){
-        //     if(b!=null && b.active)
-        //     {
-        //         this.enemyGroup.children.each(function (a){
-        //             if(a!=null && a.active)
-        //             {
-        //                 if(b.y + b.displayHeight/2 + config.height*0.3 >= a.y - a.displayHeight/2 && b.y + b.displayHeight/2 + config.height*0.3 <= a.y + a.displayHeight/2)
-        //                 {
-
-        //                 }
-        //             }
-        //         }.bind(this));
-        //     }
-        // }.bind(this))
         for(var i = 0; i < this.boatArray.length; i++)
         {
             if(this.boatArray[i] != null && this.boatArray[i].body != null)
@@ -344,7 +332,7 @@ class gameplay extends Phaser.Scene
                     this.enemyGroup.children.each(function(b){
                         if(b!=null && b.active)
                         {
-                            if(this.boatArray[i].body.y + this.boatArray[i].body.displayHeight/2 + config.height*0.3 >= b.y - b.displayHeight/2)
+                            if(this.boatArray[i].body.y - this.boatArray[i].body.displayHeight/2 - config.height*0.3 <= b.y + b.displayHeight/2)
                             {
                                 if(this.boatArray[i].body.x > b.x - b.displayWidth/2 && this.boatArray[i].body.x < b.x + b.displayWidth/2)
                                 {                            
@@ -368,6 +356,15 @@ class gameplay extends Phaser.Scene
                 {
                     this.boatArray[i].DodgeRock();
                 }
+                if(this.boatArray[i].body.y > this.cam.scrollY + this.cam.height + this.boatArray[i].body.displayHeight/2)
+                {
+                    this.aiboatGroup.remove(this.boatArray[i].body,true,true);
+                    RemoveElement(this.boatArray, this.boatArray[i]);
+                }
+                else
+                {
+                    this.boatArray[i].MoveBoat();
+                }
             }
         }
     }
@@ -383,7 +380,7 @@ class gameplay extends Phaser.Scene
             {
                 CURR_SPEED += SCROLL_SPEED * 0.1;
                 // CURR_SPAWN_TIME -= 150;
-                CURR_MOVE_SPEED += CAR_MOVE_SPEED*0.1;
+                CURR_MOVE_SPEED = Math.min(CURR_MOVE_SPEED + CAR_MOVE_SPEED*0.1, 5);
                 //console.log(CURR_SPEED + "\n"+CURR_MOVE_SPEED);
             }
         }
@@ -410,23 +407,23 @@ class gameplay extends Phaser.Scene
             if (b!=null && b.active) {
                 b.y-=CURR_SPEED/2;
                 if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
-                     console.log("removing enemy" + this.enemyGroup);
+                     //console.log("removing enemy" + this.enemyGroup);
                      this.enemyGroup.remove(b,true,true);
                      // console.log(this.enemyGroup);
                     }
                 }
             }.bind(this));
             
-        this.aiboatGroup.children.each(function (b) {
-            if (b!=null && b.active) {
-                b.y+=CURR_SPEED/8;
-                if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
-                    console.log("removing boat" + this.aiboatGroup);
-                    RemoveElement(this.boatArray,this.getObject(b));
-                    this.aiboatGroup.remove(b,true,true);
-                }
-            }
-        }.bind(this));
+        // this.aiboatGroup.children.each(function (b) {
+        //     if (b!=null && b.active) {
+        //         b.y-=CURR_SPEED*0.75;
+        //         if (b.y > this.cam.scrollY + this.cam.height+ b.displayHeight/2) {
+        //             console.log("removing boat" + this.aiboatGroup);
+        //             RemoveElement(this.boatArray,this.getObject(b));
+        //             this.aiboatGroup.remove(b,true,true);
+        //         }
+        //     }
+        // }.bind(this));
 
         this.bgGroup.children.each(function (b){
             if(b!=null){
@@ -504,10 +501,8 @@ class gameplay extends Phaser.Scene
         if (bodyA.active && bodyA.visible && bodyB.active && bodyB.visible) {
             if ((this.enemyGroup.contains(bodyA)|| this.aiboatGroup.contains(bodyA)) && this.car == bodyB) {
                 enemy = bodyA
-                // console.log("bullet hit orc");
             } else if (this.car == bodyA && (this.enemyGroup.contains(bodyB) || this.aiboatGroup.contains(bodyB))) {
                 enemy = bodyB
-                //console.log("bullet hit orc 2");
             }
             if (enemy != null) {
                 this.isGameOver = true;
@@ -515,17 +510,41 @@ class gameplay extends Phaser.Scene
             }
         }
     }
+
+    CheckAIBoatRockCollision(bodyA, bodyB) {
+        if(this.isGameOver == true|| bodyA == null || bodyB == null)
+            return;
+        var rock, boat;
+        if (bodyA.active && bodyA.visible && bodyB.active && bodyB.visible) {
+            if (this.enemyGroup.contains(bodyA) && this.aiboatGroup.contains(bodyB)) {
+                console.log("condition 1");
+                rock = bodyA;
+                boat = bodyB;
+            } else if (this.enemyGroup.contains(bodyB) && this.aiboatGroup.contains(bodyA)) {
+                console.log("condition 2");
+                rock = bodyB;
+                boat = bodyA;
+            }
+            if (rock != null && boat != null) {
+                //this.boatArray[this.getObjectIndex(boat)].isHit = true;
+                console.log(boat);
+                boat.anims.pause();
+                this.getObject(boat).isHit = true;
+            }
+        }
+    }
+
     EnemySpawner()
     {
         this.spawnTimer += game.loop.delta;
         if(this.spawnTimer >= CURR_SPAWN_TIME)
         {
-            console.log("spawn");
             this.spawnTimer = 0;
             var choice = Math.floor(Math.random()*100)
-            if(choice > 20)
+            if(choice > 15)
             {
-
+                
+                //console.log("spawn Rock");
                 var rng = Math.floor(Math.random()*Obstacles.length);
                 var enemy = this.matter.add.image(0, this.cam.scrollY - 50, Obstacles[rng].gamekey).setOrigin(0.5).setDepth(1);
                 enemy.setSensor(true);
@@ -536,6 +555,7 @@ class gameplay extends Phaser.Scene
             }
             else
             {
+                console.log("spawn Boat");
                 var rng = Math.floor(Math.random()*Boats.length);
                 enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true).setDepth(1);
                 enemy.setBody(Boats[rng].body);
@@ -543,10 +563,8 @@ class gameplay extends Phaser.Scene
                 Align.scaleToGameH(enemy,0.3,this);
                 enemy.x = Math.random()*config.width*0.5 + config.width*0.25;
 
-                // console.log(this.boatArray);
                 checkArray(this.boatArray)
                 this.boatArray.push(new EnemyBoat(enemy));
-                // console.log(this.boatArray);
                 
                 this.aiboatGroup.add(enemy);
             }
@@ -565,6 +583,18 @@ class gameplay extends Phaser.Scene
         }
         return null;
     }
+    getObjectIndex(b)
+    {
+        for(var i = 0; i < this.boatArray.length; i++)
+        {
+            if(this.boatArray[i].body == b)
+            {
+                console.log("found boat class object at:  " + i);
+                return i;
+            }
+        }
+        return -1;
+    }
 }
 
 class EnemyBoat
@@ -573,8 +603,20 @@ class EnemyBoat
     {
         this.body = sprite;
         this.initX = sprite.x;
-        this.isDoneDodge = false;
         this.isDodging = false;
+        this.isHit = false;
+    }
+
+    MoveBoat()
+    {
+        if(this.isHit)
+        {
+            this.body.y -= CURR_SPEED/2;
+        }
+        else
+        {
+            this.body.y -= CURR_SPEED*0.75;
+        }
     }
 
     setTarget(x)
@@ -586,7 +628,7 @@ class EnemyBoat
 
     DodgeRock()
     {
-        if(!this.isDoneDodge && this.isDodging)
+        if(!this.isHit && this.isDodging)
         {
             this.dodgeTimer += game.loop.delta/800;             //Finish moving in 800ms
             var x = Phaser.Math.Linear(this.initX, this.FinalX, this.dodgeTimer);
@@ -594,8 +636,8 @@ class EnemyBoat
             if(this.dodgeTimer > 1)
             {
                 this.isDodging = false;
-                this.isDoneDodge = true;
                 this.body.x = this.FinalX;
+                this.initX = this.FinalX;
             }
         }
     }

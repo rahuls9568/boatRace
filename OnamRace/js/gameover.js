@@ -14,14 +14,18 @@ class gameover extends Phaser.Scene
         //this.load.image('GOpanel','images/panel.png');
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
+        this.load.image('logo','images/ap-logo.jpg');
+        this.load.image('onamImg','images/HappyOnam.png');
     }
 
     create()
     {
         
         var bg = this.add.image(config.width/2,config.height/2,"GOBG").setOrigin(0.5);
+        var logo = this.add.image(0,0,'logo').setOrigin(0.5);
         var menubtn = this.add.image(config.width/2,0,'GOMenuBtn').setOrigin(0.5).setInteractive();
         var go = this.add.image(config.width/2, config.height/2,'GOmessage').setOrigin(0.5);
+        var onam = this.add.image(0,0,'onamImg').setOrigin(0.5);
         //this.add.image(config.width/2,config.height/2,"GOpanel").setOrigin(0.5);
 
         this.add.text(config.width/2,config.height/2 - 25,"",{fontFamily:"myFont",fontSize:40,fill:"#000000",align:"center"}).setOrigin(0.5).setText("Score : " + scoreManager.GetScore());
@@ -38,8 +42,12 @@ class gameover extends Phaser.Scene
         Align.scaleToGameH(bg,1,this);
         this.agrid.placeAtIndex(60,go);
         Align.scaleToGameW(go,0.8,this);
-        this.agrid.placeAtIndex(181,menubtn);
+        this.agrid.placeAtIndex(170,menubtn);
         Align.scaleToGameH(menubtn,0.1,this);
+        this.agrid.placeAtIndex(148,logo);
+        Align.scaleToGameH(logo,0.15,this);
+        this.agrid.placeAtIndex(203,onam);
+        Align.scaleToGameH(onam,0.15,this);
 
         var musicOnBtn = this.add.image(config.width,0,'MUSICOnImg').setOrigin(1,0).setInteractive();
         var musicOffBtn = this.add.image(config.width,0,'MUSICOffImg').setOrigin(1,0).setInteractive();

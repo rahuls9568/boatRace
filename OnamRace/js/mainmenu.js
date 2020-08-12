@@ -20,12 +20,14 @@ class mainmenu extends Phaser.Scene
         this.load.image("gameName","images/gameName.png");
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
+        this.load.image('apLogo','images/ap-logo.jpg');
     }
 
     create()
     {
         var bg = this.add.image(config.width/2,config.height/2,'menubg').setOrigin(0.5);
-        
+
+        var logo = this.add.image(0,0,'apLogo').setOrigin(0.5,0);
         var gname = this.add.image(config.width/2,0,'gameName').setOrigin(0.5);
         var playBtn = this.add.image(config.width/2,0,'playBtn').setOrigin(0.5).setInteractive();
         var insBtn = this.add.image(config.width/2,0,'insBtn').setOrigin(0.5).setInteractive()//.setVisible(false);
@@ -64,9 +66,12 @@ class mainmenu extends Phaser.Scene
             shopBtn.removeListener("pointerdown");
         },this)
         
+        var pos = this.agrid.getPosByIndex(5);
+        logo.setPosition(pos.x,0);
+        Align.scaleToGameH(logo,0.15,this);
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg, 1, this);
-        this.agrid.placeAtIndex(49,gname);
+        this.agrid.placeAtIndex(71,gname);
         Align.scaleToGameW(gname,0.9,this);
         this.agrid.placeAtIndex(115,playBtn)
         Align.scaleToGameH(playBtn,0.1,this)

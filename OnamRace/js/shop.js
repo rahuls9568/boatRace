@@ -83,6 +83,11 @@ class shop extends Phaser.Scene
         
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg,1,this);
+        if(bg.displayWidth/config.width < 1)
+        {
+            bg.displayWidth = config.width*1.2;
+            bg.displayHeight = config.height*1;
+        }
         this.agrid.placeAtIndex(100,this.leftArr);
         Align.scaleToGameW(this.leftArr,0.2,this);
         this.agrid.placeAtIndex(108,this.rightArr);

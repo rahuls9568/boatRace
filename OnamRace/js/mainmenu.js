@@ -71,8 +71,13 @@ class mainmenu extends Phaser.Scene
         Align.scaleToGameH(logo,0.15,this);
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg, 1, this);
+        if(bg.displayWidth/config.width < 1)
+        {
+            bg.displayWidth = config.width*1.2;
+            bg.displayHeight = config.height*1;
+        }
         this.agrid.placeAtIndex(71,gname);
-        Align.scaleToGameW(gname,0.9,this);
+        Align.scaleToGameW(gname,0.8,this);
         this.agrid.placeAtIndex(115,playBtn)
         Align.scaleToGameH(playBtn,0.1,this)
         this.agrid.placeAtIndex(148,insBtn)

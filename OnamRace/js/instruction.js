@@ -42,6 +42,11 @@ class instruction extends Phaser.Scene
         
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg, 1, this);
+        if(bg.displayWidth/config.width < 1)
+        {
+            bg.displayWidth = config.width*1.2;
+            bg.displayHeight = config.height*1;
+        }
         this.agrid.placeAtIndex(115,how);
         // Align.scaleToGameW(how,1,this);
         how.displayWidth = config.width*1.2;

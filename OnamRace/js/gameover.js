@@ -40,8 +40,13 @@ class gameover extends Phaser.Scene
 
         this.agrid.placeAtIndex(115,bg);
         Align.scaleToGameH(bg,1,this);
+        if(bg.displayWidth/config.width < 1)
+        {
+            bg.displayWidth = config.width*1.2;
+            bg.displayHeight = config.height*1;
+        }
         this.agrid.placeAtIndex(60,go);
-        Align.scaleToGameW(go,0.8,this);
+        Align.scaleToGameW(go,0.75,this);
         this.agrid.placeAtIndex(170,menubtn);
         Align.scaleToGameH(menubtn,0.1,this);
         this.agrid.placeAtIndex(148,logo);

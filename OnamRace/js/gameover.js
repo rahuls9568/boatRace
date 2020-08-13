@@ -1,4 +1,3 @@
-var TEXT_SIZE = 40;
 class gameover extends Phaser.Scene
 {
     constructor()

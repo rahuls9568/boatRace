@@ -191,6 +191,13 @@ var Obstacles = [{
     gamekey:"obs9Img",
 }]
 
+var CAR_MOVE_SPEED = 3, SCROLL_SPEED = 4;
+var ENEMY_SPAWN_TIME = 3000;
+var CURR_SPEED = 0;
+var CURR_SPAWN_TIME = 0;
+var isMoveRight = false, isMoveLeft = false;
+var CURR_MOVE_SPEED = 0;
+
 var sfxFlag=true, musicFlag=true;
 var currentBoat = Boats[0];
 var scoreManager = new Score();

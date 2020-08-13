@@ -1,10 +1,3 @@
-var CAR_MOVE_SPEED = 3, SCROLL_SPEED = 4;
-var ENEMY_SPAWN_TIME = 3000;
-var CURR_SPEED = 0;
-var CURR_SPAWN_TIME = 0;
-var isMoveRight = false, isMoveLeft = false;
-var CURR_MOVE_SPEED = 0;
-
 class gameplay extends Phaser.Scene
 {
     constructor()
@@ -13,11 +6,7 @@ class gameplay extends Phaser.Scene
     }
 
     preload()
-    {
-        SCROLL_SPEED = config.height/160;
-        TEXT_SIZE = config.height/16;
-        CAR_MOVE_SPEED = config.width/106.667;
-        
+    {   
         this.scene.bringToTop();
         //this.load.image(currentBoat.gamekey,currentBoat.playImg);
         this.load.image('gamebg1','images/bg1.png')
@@ -52,6 +41,10 @@ class gameplay extends Phaser.Scene
 
     create()
     {
+        SCROLL_SPEED = config.height/160;
+        TEXT_SIZE = config.height/16;
+        CAR_MOVE_SPEED = config.width/106.667;
+
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
         this.boatArray = new Array(0)
 

@@ -25,7 +25,7 @@ class mainmenu extends Phaser.Scene
 
     create()
     {
-	SCROLL_SPEED = config.height/160;
+        SCROLL_SPEED = config.height/160;
         TEXT_SIZE = config.height/16;
         CAR_MOVE_SPEED = config.width/106.667;
 	  

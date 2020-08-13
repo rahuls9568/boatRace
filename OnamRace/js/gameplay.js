@@ -41,9 +41,9 @@ class gameplay extends Phaser.Scene
 
     create()
     {
-        SCROLL_SPEED = config.height/160;
-        TEXT_SIZE = config.height/16;
-        CAR_MOVE_SPEED = config.width/106.667;
+        //SCROLL_SPEED = config.height/160;
+        //TEXT_SIZE = config.height/16;
+        //CAR_MOVE_SPEED = config.width/106.667;
 
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
         this.boatArray = new Array(0)

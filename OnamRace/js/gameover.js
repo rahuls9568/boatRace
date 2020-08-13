@@ -1,3 +1,4 @@
+var TEXT_SIZE = 40;
 class gameover extends Phaser.Scene
 {
     constructor()
@@ -28,8 +29,8 @@ class gameover extends Phaser.Scene
         var onam = this.add.image(0,0,'onamImg').setOrigin(0.5);
         //this.add.image(config.width/2,config.height/2,"GOpanel").setOrigin(0.5);
 
-        this.add.text(config.width/2,config.height/2 - 25,"",{fontFamily:"myFont",fontSize:40,fill:"#000000",align:"center"}).setOrigin(0.5).setText("Score : " + scoreManager.GetScore());
-        this.add.text(config.width/2,config.height/2 + 25,"",{fontFamily:"myFont",fontSize:40,fill:"#000000",align:"center"}).setOrigin(0.5).setText("HighScore : "+scoreManager.GetHighScore());
+        this.add.text(config.width/2,config.height/2 - TEXT_SIZE/2,"",{fontFamily:"myFont",fontSize:TEXT_SIZE,fill:"#000000",align:"center"}).setOrigin(0.5).setText("Score : " + scoreManager.GetScore());
+        this.add.text(config.width/2,config.height/2 + TEXT_SIZE/2,"",{fontFamily:"myFont",fontSize:TEXT_SIZE,fill:"#000000",align:"center"}).setOrigin(0.5).setText("HighScore : "+scoreManager.GetHighScore());
         
         this.agrid = new AlignGrid({scene:this,rows:21,cols:11});
 

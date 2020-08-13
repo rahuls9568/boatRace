@@ -25,6 +25,11 @@ class mainmenu extends Phaser.Scene
 
     create()
     {
+	SCROLL_SPEED = config.height/160;
+        TEXT_SIZE = config.height/16;
+        CAR_MOVE_SPEED = config.width/106.667;
+	  
+    	console.log("SCROLL_SPEED " + SCROLL_SPEED + "\nCAR_MOVE_SPEED  " + CAR_MOVE_SPEED + "\nTEXT_SIZE " + TEXT_SIZE");
         var bg = this.add.image(config.width/2,config.height/2,'menubg').setOrigin(0.5);
 
         var logo = this.add.image(0,0,'apLogo').setOrigin(0.5,0);

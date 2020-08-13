@@ -191,7 +191,7 @@ var Obstacles = [{
     gamekey:"obs9Img",
 }]
 
-var CAR_MOVE_SPEED = 3, SCROLL_SPEED = 4;
+var CAR_MOVE_SPEED = 0, SCROLL_SPEED = 0;
 var ENEMY_SPAWN_TIME = 3000;
 var CURR_SPEED = 0;
 var CURR_SPAWN_TIME = 0;

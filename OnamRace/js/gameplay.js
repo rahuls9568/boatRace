@@ -102,9 +102,9 @@ class gameplay extends Phaser.Scene
         this.musicOnBtn = this.add.image(config.width,0,'MUSICOnImg').setOrigin(1,0).setInteractive().setDepth(5);
         this.musicOffBtn = this.add.image(config.width,0,'MUSICOffImg').setOrigin(1,0).setInteractive().setDepth(5);
         
-        this.car = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
-        this.car.setBody(currentBoat.body);
-        this.car.play(currentBoat.animkey);
+        this.playerBoat = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
+        this.playerBoat.setBody(currentBoat.body);
+        this.playerBoat.play(currentBoat.animkey);
         this.scoreText = this.add.text(0,0,"Score : 0",{fontFamily:"myFont",fontSize:TEXT_SIZE*0.75,fill:"#000000",align:"left"}).setOrigin(0).setDepth(10);
         
         CURR_SPEED = SCROLL_SPEED;
@@ -115,10 +115,6 @@ class gameplay extends Phaser.Scene
         this.aiboatGroup = this.add.group();
         this.bgGroup = this.add.group();
         this.crowdGroup = this.add.group();
-        
-        var indexArray = new Array(0);
-        
-        
 
         this.agrid.placeAtIndex(115,this.bg1);
         // Align.scaleToGameH(this.bg1,1,this);
@@ -140,15 +136,16 @@ class gameplay extends Phaser.Scene
         this.bg4.displayWidth = config.width;
         this.bg4.displayHeight = config.height;
         this.bg4.y -= 3*this.bg4.displayHeight;
-        this.agrid.placeAtIndex(170,this.car);
-        Align.scaleToGameH(this.car,0.35,this)
+        this.agrid.placeAtIndex(170,this.playerBoat);
+        Align.scaleToGameH(this.playerBoat,0.35,this)
         //this.agrid.placeAtIndex(10,this.musicOnBtn);
         Align.scaleToGameH(this.musicOnBtn,0.075,this);
         //this.agrid.placeAtIndex(10,this.musicOffBtn);
         Align.scaleToGameH(this.musicOffBtn,0.075,this);
         
-        this.spawnInitial(this.car.x - 0.25*config.width,indexArray);
-        this.spawnInitial(this.car.x + 0.25*config.width,indexArray);
+        var indexArray = new Array(0);
+        this.spawnInitial(this.playerBoat.x - 0.25*config.width,indexArray);
+        this.spawnInitial(this.playerBoat.x + 0.25*config.width,indexArray);
 
         var start = this.add.image(config.width/2,config.height,'startLine').setOrigin(0.5,1);
         start.displayWidth = config.width;
@@ -458,7 +455,7 @@ class gameplay extends Phaser.Scene
     Move()
     {
         this.cam.scrollY -= CURR_SPEED;
-        this.car.y -= CURR_SPEED;
+        this.playerBoat.y -= CURR_SPEED;
         //this.bg.y -= CURR_SPEED;
         this.scoreText.y -= CURR_SPEED;
         if(isMobile != -1)
@@ -474,9 +471,9 @@ class gameplay extends Phaser.Scene
     {
         if(isMoveRight)
         {
-            if(this.car.x < config.width*0.75)
+            if(this.playerBoat.x < config.width*0.75)
             {
-                this.car.x += CURR_MOVE_SPEED;
+                this.playerBoat.x += CURR_MOVE_SPEED;
             }
             else
             {
@@ -486,9 +483,9 @@ class gameplay extends Phaser.Scene
         }
         else if(isMoveLeft)
         {
-            if(this.car.x > config.width*0.25)
+            if(this.playerBoat.x > config.width*0.25)
             {
-                this.car.x -= CURR_MOVE_SPEED;
+                this.playerBoat.x -= CURR_MOVE_SPEED;
             }    
             else
             {
@@ -500,8 +497,8 @@ class gameplay extends Phaser.Scene
 
     SpawnDeadBoat()
     {
-        this.car.setVisible(false);
-        var deadBoat = this.add.image(this.car.x,this.car.y,currentBoat.deadKey).setOrigin(0.5);
+        this.playerBoat.setVisible(false);
+        var deadBoat = this.add.image(this.playerBoat.x,this.playerBoat.y,currentBoat.deadKey).setOrigin(0.5);
         Align.scaleToGameH(deadBoat,0.3,this);
         this.sound.pauseAll();
         if(musicFlag)
@@ -513,9 +510,9 @@ class gameplay extends Phaser.Scene
             return;
         var enemy;
         if (bodyA.active && bodyA.visible && bodyB.active && bodyB.visible) {
-            if ((this.enemyGroup.contains(bodyA)|| this.aiboatGroup.contains(bodyA)) && this.car == bodyB) {
+            if ((this.enemyGroup.contains(bodyA)|| this.aiboatGroup.contains(bodyA)) && this.playerBoat == bodyB) {
                 enemy = bodyA
-            } else if (this.car == bodyA && (this.enemyGroup.contains(bodyB) || this.aiboatGroup.contains(bodyB))) {
+            } else if (this.playerBoat == bodyA && (this.enemyGroup.contains(bodyB) || this.aiboatGroup.contains(bodyB))) {
                 enemy = bodyB
             }
             if (enemy != null) {
@@ -531,16 +528,15 @@ class gameplay extends Phaser.Scene
         var rock, boat;
         if (bodyA.active && bodyA.visible && bodyB.active && bodyB.visible) {
             if (this.enemyGroup.contains(bodyA) && this.aiboatGroup.contains(bodyB)) {
-                //console.log("condition 1");
+                console.log("condition 1");
                 rock = bodyA;
                 boat = bodyB;
             } else if (this.enemyGroup.contains(bodyB) && this.aiboatGroup.contains(bodyA)) {
-                //console.log("condition 2");
+                console.log("condition 2");
                 rock = bodyB;
                 boat = bodyA;
             }
             if (rock != null && boat != null) {
-                //this.boatArray[this.getObjectIndex(boat)].isHit = true;
                 console.log(boat);
                 boat.anims.pause();
                 this.getObject(boat).isHit = true;
@@ -569,11 +565,12 @@ class gameplay extends Phaser.Scene
             }
             else
             {
-                //console.log("spawn Boat");
                 var rng = -1;
                 do{
                     rng = Math.floor(Math.random()*Boats.length);
-                }while(Boats[rng]==currentBoat);
+                }while(Boats[rng].name == currentBoat.name);
+                console.log("spawn Boat\n" + currentBoat.name + "   " + Boats[rng].name);
+                // console.log(Boats[rng].name);
 
                 enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true).setDepth(1);
                 enemy.setBody(Boats[rng].body);
@@ -609,26 +606,29 @@ class gameplay extends Phaser.Scene
     {
         for(var i = 0; i < this.boatArray.length; i++)
         {
-            if(this.boatArray[i].body == b)
+            if(this.boatArray[i] != null && this.boatArray[i].body != null)
             {
-                //console.log("found boat class object at:  " + i);
-                return this.boatArray[i];
+                if(this.boatArray[i].body == b)
+                {
+                    //console.log("found boat class object at:  " + i);
+                    return this.boatArray[i];
+                }
             }
         }
         return null;
     }
-    getObjectIndex(b)
-    {
-        for(var i = 0; i < this.boatArray.length; i++)
-        {
-            if(this.boatArray[i].body == b)
-            {
-                //console.log("found boat class object at:  " + i);
-                return i;
-            }
-        }
-        return -1;
-    }
+    // getObjectIndex(b)
+    // {
+    //     for(var i = 0; i < this.boatArray.length; i++)
+    //     {
+    //         if(this.boatArray[i].body == b)
+    //         {
+    //             //console.log("found boat class object at:  " + i);
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // }
 }
 
 class EnemyBoat

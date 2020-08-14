@@ -149,10 +149,10 @@ class gameplay extends Phaser.Scene
         
         this.spawnInitial(this.car.x - 0.25*config.width,indexArray);
         this.spawnInitial(this.car.x + 0.25*config.width,indexArray);
-	    
-    	var start = this.add.image(config.width/2,config.height,'startLine').setOrigin(0.5,1);
+
+        var start = this.add.image(config.width/2,config.height,'startLine').setOrigin(0.5,1);
         start.displayWidth = config.width;
-    	start.displayHeight = config.height*0.15;
+        start.displayHeight = config.height*0.15;
         this.crowdGroup.add(start);
 
 
@@ -570,7 +570,11 @@ class gameplay extends Phaser.Scene
             else
             {
                 //console.log("spawn Boat");
-                var rng = Math.floor(Math.random()*Boats.length);
+                var rng = -1;
+                do{
+                    rng = Math.floor(Math.random()*Boats.length);
+                }while(Boats[rng]==currentBoat);
+
                 enemy = this.matter.add.sprite(0,this.cam.scrollY - 50, Boats[rng].gamekey,0).setOrigin(0.5).setSensor(true).setDepth(1);
                 enemy.setBody(Boats[rng].body);
                 enemy.play(Boats[rng].animkey);

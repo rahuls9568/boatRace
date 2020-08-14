@@ -118,9 +118,7 @@ class gameplay extends Phaser.Scene
         
         var indexArray = new Array(0);
         
-        var start = this.add.image(config.width/2,config.height,'startLine').setOrigin(0.5,1);
-        start.displayWidth = config.width;
-        this.crowdGroup.add(start);
+        
 
         this.agrid.placeAtIndex(115,this.bg1);
         // Align.scaleToGameH(this.bg1,1,this);
@@ -151,6 +149,11 @@ class gameplay extends Phaser.Scene
         
         this.spawnInitial(this.car.x - 0.25*config.width,indexArray);
         this.spawnInitial(this.car.x + 0.25*config.width,indexArray);
+	    
+    	var start = this.add.image(config.width/2,config.height,'startLine').setOrigin(0.5,1);
+        start.displayWidth = config.width;
+    	start.displayHeight = config.height*0.15;
+        this.crowdGroup.add(start);
 
 
         this.bgGroup.add(this.bg1);

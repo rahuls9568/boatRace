@@ -296,10 +296,10 @@ class gameplay extends Phaser.Scene
             if(this.sys.game.device.os.android == true)
             {
                 console.log("android true");
-                //this.leftBtn.emit("pointerdown");
-                //this.leftBtn.emit("pointerout");
-                //this.rightBtn.emit("pointerdown");
-                //this.rightBtn.emit("pointerout");
+                this.leftBtn.emit("pointerdown");
+                this.leftBtn.emit("pointerout");
+                this.rightBtn.emit("pointerdown");
+                this.rightBtn.emit("pointerout");
             }
             // if(isMobile != -1)
             // {

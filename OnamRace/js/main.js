@@ -48,6 +48,9 @@ var config = {
         width: w,
         height: h
     },
+    audio: {
+        disableWebAudio: true,
+    },
 };
 
 var Boats = [{

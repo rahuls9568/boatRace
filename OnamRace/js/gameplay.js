@@ -238,8 +238,8 @@ class gameplay extends Phaser.Scene
             this.rightBtn.on("pointerout",function(pointer){
                 isMoveRight = false;
             },this);
-            this.leftBtn.emit("pointerdown");
-            this.rightBtn.emit("pointerdown");
+            //this.leftBtn.emit("pointerdown");
+            //this.rightBtn.emit("pointerdown");
         }
         else
         {

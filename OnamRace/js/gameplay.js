@@ -34,8 +34,7 @@ class gameplay extends Phaser.Scene
         }
         this.load.image(currentBoat.deadKey,currentBoat.deadPath);
 
-        this.load.audio('rowbgm','audio/Background sound.mp3');
-        this.load.audio('rowIns','audio/Boat instructions.mp3');
+        
         this.load.audio('crashAudio','audio/crashing wood.mp3');
 
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
@@ -293,10 +292,19 @@ class gameplay extends Phaser.Scene
             eventInit = true;
             game.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
             game.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
-            // this.leftBtn.emit("pointerdown");
-            // this.leftBtn.emit("pointerout");
-            // this.rightBtn.emit("pointerdown");
-            // this.rightBtn.emit("pointerout");
+            console.log(this.sys.game.device.os);
+            if(this.sys.game.device.os.android == true)
+            {
+                console.log("android true");
+                this.leftBtn.emit("pointerdown");
+                this.leftBtn.emit("pointerout");
+                this.rightBtn.emit("pointerdown");
+                this.rightBtn.emit("pointerout");
+            }
+            // if(isMobile != -1)
+            // {
+            //     console.log("here");
+            // }
         }
 
         //this.agrid.showNumbers();

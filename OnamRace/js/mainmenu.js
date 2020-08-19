@@ -21,6 +21,9 @@ class mainmenu extends Phaser.Scene
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
         this.load.image('apLogo','images/ap-logo.jpg');
+
+        this.load.audio('rowbgm','audio/Background sound.mp3');
+        this.load.audio('rowIns','audio/Boat instructions.mp3');
     }
 
     create()

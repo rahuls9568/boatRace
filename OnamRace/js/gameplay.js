@@ -238,6 +238,8 @@ class gameplay extends Phaser.Scene
             this.rightBtn.on("pointerout",function(pointer){
                 isMoveRight = false;
             },this);
+            this.leftBtn.emit("pointerdown");
+            this.rightBtn.emit("pointerdown");
         }
         else
         {
@@ -334,7 +336,7 @@ class gameplay extends Phaser.Scene
                 scoreManager.SetHighScore();
                 this.isGameOver = null;
                 this.rowBGM.destroy();
-                this.sound.stopAll();
+                //this.sound.stopAll();
                 game.scene.start("gameover");
             }
         }

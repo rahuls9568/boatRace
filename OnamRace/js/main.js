@@ -1,3 +1,16 @@
+PauseEvent = function(){};
+ResumeEvent = function(){};
+document.addEventListener("focus", function() {
+    //this is important as sometimes the system take a while
+    //to get focus properly
+    setTimeout(function() {
+        ResumeEvent();
+    }, 300);
+});
+//tell the game/app when the document loses the focus
+document.addEventListener("blur", function() {
+    PauseEvent();
+});
 var config;
 var game;
 var isCenterable = true;

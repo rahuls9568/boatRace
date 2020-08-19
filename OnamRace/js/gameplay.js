@@ -1,3 +1,4 @@
+eventInit = false, isInGame = false;
 class gameplay extends Phaser.Scene
 {
     constructor()
@@ -40,6 +41,7 @@ class gameplay extends Phaser.Scene
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
         this.load.image('PauseImg','images/pauseBtn.png');
+        isInGame = true;
     }
 
     create()
@@ -238,8 +240,8 @@ class gameplay extends Phaser.Scene
             this.rightBtn.on("pointerout",function(pointer){
                 isMoveRight = false;
             },this);
-            //this.leftBtn.emit("pointerdown");
-            //this.rightBtn.emit("pointerdown");
+            // this.leftBtn.emit("pointerdown");
+            // this.rightBtn.emit("pointerdown");
         }
         else
         {
@@ -286,27 +288,41 @@ class gameplay extends Phaser.Scene
         //     game.scene.getScene('gameplay').Resume();
         // }
 
-        game.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
-        game.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
+        if(!eventInit)
+        {
+            eventInit = true;
+            game.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
+            game.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
+            // this.leftBtn.emit("pointerdown");
+            // this.leftBtn.emit("pointerout");
+            // this.rightBtn.emit("pointerdown");
+            // this.rightBtn.emit("pointerout");
+        }
 
         //this.agrid.showNumbers();
     }
 
     Pause()
     {
-        console.log("PAUSE CALLED");
-        this.isPaused = true;
-        this.sound.pauseAll();
-        this.anims.pauseAll();
+        if(isInGame === true)
+        {
+            console.log("PAUSE CALLED");
+            this.isPaused = true;
+            this.sound.pauseAll();
+            this.anims.pauseAll();
+        }
     }
     
     Resume()
     {
-        console.log("RESUME CALLED");
-        this.isPaused = false;
-        this.anims.resumeAll();
-        if(musicFlag)
-            this.sound.resumeAll();
+        if(isInGame === true)
+        {
+            console.log("RESUME CALLED");
+            this.isPaused = false;
+            this.anims.resumeAll();
+            if(musicFlag)
+                this.sound.resumeAll();
+        }
     }
 
     update()
@@ -331,12 +347,13 @@ class gameplay extends Phaser.Scene
             this.anims.pauseAll();
             if(this.GOtimer >= 2500)
             {
+                isInGame = false;
                 PauseEvent = function(){};
                 ResumeEvent = function(){};
                 scoreManager.SetHighScore();
                 this.isGameOver = null;
                 this.rowBGM.destroy();
-                //this.sound.stopAll();
+                this.rowIns.destroy();
                 game.scene.start("gameover");
             }
         }

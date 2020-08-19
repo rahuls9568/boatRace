@@ -275,20 +275,24 @@ class gameplay extends Phaser.Scene
             })
         }
 
-        PauseEvent = function(){
-            console.log("PAUSE CALLED");
-            game.scene.getScene('gameplay').Pause();
-        }
-        ResumeEvent = function(){
-            console.log("RESUME CALLED");
-            game.scene.getScene('gameplay').Resume();
-        }
+        // PauseEvent = function(){
+        //     console.log("PAUSE CALLED");
+        //     game.scene.getScene('gameplay').Pause();
+        // }
+        // ResumeEvent = function(){
+        //     console.log("RESUME CALLED");
+        //     game.scene.getScene('gameplay').Resume();
+        // }
+
+        this.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
+        this.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
 
         //this.agrid.showNumbers();
     }
 
     Pause()
     {
+        console.log("PAUSE CALLED");
         this.isPaused = true;
         this.sound.pauseAll();
         this.anims.pauseAll();
@@ -296,6 +300,7 @@ class gameplay extends Phaser.Scene
     
     Resume()
     {
+        console.log("RESUME CALLED");
         this.isPaused = false;
         this.anims.resumeAll();
         if(musicFlag)
@@ -324,6 +329,8 @@ class gameplay extends Phaser.Scene
             this.anims.pauseAll();
             if(this.GOtimer >= 2500)
             {
+                PauseEvent = function(){};
+                ResumeEvent = function(){};
                 scoreManager.SetHighScore();
                 this.isGameOver = null;
                 this.rowBGM.destroy();

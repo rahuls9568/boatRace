@@ -276,16 +276,16 @@ class gameplay extends Phaser.Scene
         }
 
         // PauseEvent = function(){
-        //     console.log("PAUSE CALLED");
+        //     //console.log("PAUSE CALLED");
         //     game.scene.getScene('gameplay').Pause();
         // }
         // ResumeEvent = function(){
-        //     console.log("RESUME CALLED");
+        //     //console.log("RESUME CALLED");
         //     game.scene.getScene('gameplay').Resume();
         // }
 
-        this.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
-        this.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
+        game.events.addListener(Phaser.Core.Events.FOCUS, this.Resume, this);
+        game.events.addListener(Phaser.Core.Events.BLUR, this.Pause, this);
 
         //this.agrid.showNumbers();
     }

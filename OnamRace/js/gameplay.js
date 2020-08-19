@@ -39,6 +39,7 @@ class gameplay extends Phaser.Scene
 
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
+        this.load.image('PauseImg','images/pauseBtn.png');
     }
 
     create()
@@ -101,6 +102,7 @@ class gameplay extends Phaser.Scene
         
         this.musicOnBtn = this.add.image(config.width,0,'MUSICOnImg').setOrigin(1,0).setInteractive().setDepth(5);
         this.musicOffBtn = this.add.image(config.width,0,'MUSICOffImg').setOrigin(1,0).setInteractive().setDepth(5);
+        this.PauseBtn = this.add.image(config.width,0,'PauseImg').setOrigin(1,0).setInteractive().setDepth(5);
         
         this.playerBoat = this.matter.add.sprite(0,0, currentBoat.gamekey,0).setOrigin(0.5).setSensor(true);
         this.playerBoat.setBody(currentBoat.body);
@@ -142,6 +144,9 @@ class gameplay extends Phaser.Scene
         Align.scaleToGameH(this.musicOnBtn,0.075,this);
         //this.agrid.placeAtIndex(10,this.musicOffBtn);
         Align.scaleToGameH(this.musicOffBtn,0.075,this);
+        //this.agrid.placeAtIndex(10,this.PauseBtn);
+        Align.scaleToGameH(this.PauseBtn,0.075,this);
+        this.PauseBtn.y = this.musicOffBtn.displayHeight;
         
         var indexArray = new Array(0);
         this.spawnInitial(this.playerBoat.x - 0.25*config.width,indexArray);
@@ -187,6 +192,18 @@ class gameplay extends Phaser.Scene
             musicFlag = true;
             this.sound.resumeAll();
         },this)
+        this.PauseBtn.on("pointerdown",function(pointer){
+            this.isPaused = !this.isPaused;
+            if(this.isPaused)
+            {
+                this.Pause();
+            }
+            else
+            {
+                this.Resume();
+            }
+        },this)
+
         if(musicFlag)
         {
             //console.log("music true");
@@ -258,7 +275,31 @@ class gameplay extends Phaser.Scene
             })
         }
 
+        PauseEvent = function(){
+            console.log("PAUSE CALLED");
+            game.scene.getScene('gameplay').Pause();
+        }
+        ResumeEvent = function(){
+            console.log("RESUME CALLED");
+            game.scene.getScene('gameplay').Resume();
+        }
+
         //this.agrid.showNumbers();
+    }
+
+    Pause()
+    {
+        this.isPaused = true;
+        this.sound.pauseAll();
+        this.anims.pauseAll();
+    }
+    
+    Resume()
+    {
+        this.isPaused = false;
+        this.anims.resumeAll();
+        if(musicFlag)
+            this.sound.resumeAll();
     }
 
     update()
@@ -465,6 +506,7 @@ class gameplay extends Phaser.Scene
         }
         this.musicOffBtn.y-=CURR_SPEED;
         this.musicOnBtn.y-=CURR_SPEED;
+        this.PauseBtn.y-=CURR_SPEED;
     }
 
     MoveCar()

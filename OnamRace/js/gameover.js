@@ -10,7 +10,8 @@ class gameover extends Phaser.Scene
         this.scene.bringToTop();
         this.load.image('GOBG','images/bg1.png');
         this.load.image('GOmessage','images/gameOver.png');
-        this.load.image("GOMenuBtn",'images/playBtn.png');
+        this.load.image("GOMenuBtn",'images/homeBtn.png');
+        this.load.image("replayBtn",'images/playBtn.png');
         //this.load.image('GOpanel','images/panel.png');
         this.load.image('MUSICOnImg','images/icon_sound_music.png');
         this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
@@ -23,7 +24,8 @@ class gameover extends Phaser.Scene
         
         var bg = this.add.image(config.width/2,config.height/2,"GOBG").setOrigin(0.5);
         var logo = this.add.image(0,0,'logo').setOrigin(0.5);
-        var menubtn = this.add.image(config.width/2,0,'GOMenuBtn').setOrigin(0.5).setInteractive();
+        var menubtn = this.add.image(config.width/2,0,'GOMenuBtn').setOrigin(0).setInteractive();
+        var replaybtn = this.add.image(config.width/2,0,'replayBtn').setOrigin(0.5).setInteractive();
         var go = this.add.image(config.width/2, config.height/2,'GOmessage').setOrigin(0.5);
         var onam = this.add.image(0,0,'onamImg').setOrigin(0.5);
         //this.add.image(config.width/2,config.height/2,"GOpanel").setOrigin(0.5);
@@ -36,6 +38,12 @@ class gameover extends Phaser.Scene
         menubtn.on("pointerdown",function(pointer){
             game.scene.start("mainmenu");
             menubtn.removeListener("pointerdown");
+            replaybtn.removeListener("pointerdown");
+        },this)
+        replaybtn.on("pointerdown",function(pointer){
+            game.scene.start("gameplay");
+            menubtn.removeListener("pointerdown");
+            replaybtn.removeListener("pointerdown");
         },this)
 
         this.agrid.placeAtIndex(115,bg);
@@ -47,8 +55,11 @@ class gameover extends Phaser.Scene
         }
         this.agrid.placeAtIndex(60,go);
         Align.scaleToGameW(go,0.75,this);
-        this.agrid.placeAtIndex(170,menubtn);
-        Align.scaleToGameH(menubtn,0.1,this);
+        this.agrid.placeAtIndex(170,replaybtn);
+        Align.scaleToGameH(replaybtn,0.1,this);
+        // this.agrid.placeAtIndex(170,menubtn);
+        Align.scaleToGameH(menubtn,0.075,this);
+        menubtn.setPosition(0,0);
         this.agrid.placeAtIndex(148,logo);
         Align.scaleToGameH(logo,0.15,this);
         this.agrid.placeAtIndex(203,onam);

@@ -11,6 +11,7 @@ document.addEventListener("focus", function() {
 document.addEventListener("blur", function() {
     PauseEvent();
 });
+
 var config;
 var game;
 var isCenterable = true;

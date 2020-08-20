@@ -216,6 +216,7 @@ var isMoveRight = false, isMoveLeft = false;
 var CURR_MOVE_SPEED = 0;
 var TEXT_SIZE = 40;
 
+eventInit = false, isInGame = false;
 var sfxFlag=true, musicFlag=true;
 var currentBoat = Boats[0];
 var scoreManager = new Score();

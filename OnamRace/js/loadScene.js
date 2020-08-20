@@ -87,6 +87,7 @@ class loading extends Phaser.Scene
         for(var i = 0; i < Boats.length; i++)
         {
             this.load.spritesheet(Boats[i].gamekey, Boats[i].playImg, Boats[i].frameDetails);
+            this.load.image(Boats[i].deadKey,Boats[i].deadPath);
         }
         for(var i = 0; i < Obstacles.length; i++)
         {
@@ -101,7 +102,7 @@ class loading extends Phaser.Scene
             this.load.image('leftImg','images/leftBtn.png');
             this.load.image('rightImg','images/rightBtn.png');
         }
-        this.load.image(currentBoat.deadKey,currentBoat.deadPath);
+        //this.load.image(currentBoat.deadKey,currentBoat.deadPath);
 
         
         this.load.audio('crashAudio','audio/crashing wood.mp3');

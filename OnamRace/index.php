@@ -18,6 +18,7 @@
     <script src="js/mainmenu.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/shop.js"></script>
+    <script src="js/loadScene.js"></script>
     <script src="js/main.js"></script>
     <style>
         #phaser-game

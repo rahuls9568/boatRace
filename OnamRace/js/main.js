@@ -220,3 +220,24 @@ var sfxFlag=true, musicFlag=true;
 var currentBoat = Boats[0];
 var scoreManager = new Score();
 game = new Phaser.Game(config);
+
+function getLoadString(filekey)
+{
+    if(filekey.search("obs") != -1)
+    {
+        return "obstacles";
+    }
+    if(filekey.search("crowd") != -1)
+    {
+        return "crowds";
+    }
+    if(filekey.search("boat") != -1 || filekey.search("Boat") != -1)
+    {
+        return "boats";
+    }
+    if(filekey.search("bg") != -1)
+    {
+        return "background";
+    }
+    return "";
+}

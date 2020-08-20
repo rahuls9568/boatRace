@@ -61,8 +61,10 @@ class loading extends Phaser.Scene
         });
         
         this.load.on('fileprogress', function (file) {
-            console.log('Loading asset: ' + file.key);
-            assetText.setText('Loading asset: ' + file.key);
+            // console.log('Loading asset: ' + file.key);
+            //console.log(file.key + "\n" + getLoadString(file.key));
+            assetText.setText('Loading ' + getLoadString(file.key));
+            //assetText.setText('Loading game assets');
         });
 
         this.load.on('complete', function () {
@@ -113,4 +115,6 @@ class loading extends Phaser.Scene
     {
         this.scene.start('gameplay');
     }
+
+    
 }

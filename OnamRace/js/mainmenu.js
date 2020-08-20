@@ -9,6 +9,8 @@ class mainmenu extends Phaser.Scene
     {
         // sfxFlag = true;
         // musicFlag = true;
+        this.s1Loaded = false;
+        this.s2Loaded = false;
 
         this.scene.bringToTop();
         this.load.image("menubg", "images/bg1.png");
@@ -24,6 +26,13 @@ class mainmenu extends Phaser.Scene
 
         this.load.audio('rowbgm',['audio/Background sound.mp3','audio/Background sound.ogg']);
         this.load.audio('rowIns',['audio/Boat instructions.mp3','audio/Boat instructions.ogg']);
+
+        
+        // this.sound.decodeAudio([
+        //     {key:'rowbgm',data:['audio/Background sound.mp3','audio/Background sound.ogg']},
+        //     {key:'rowIns',data:['audio/Boat instructions.mp3','audio/Boat instructions.ogg']}
+        // ]);
+        // this.sound.on('decodedall');
     }
 
     create()
@@ -46,7 +55,11 @@ class mainmenu extends Phaser.Scene
 
 		
 		playBtn.on("pointerdown",function(pointer){
-            game.scene.start("gameplay");
+            // if (game.cache.isSoundDecoded('rowbgm') && game.cache.isSoundDecoded('rowIns'))
+            // {
+            // }
+            this.hideAllObjects([logo,gname,playBtn,insBtn,settingBtn,shopBtn,musicOnBtn,musicOffBtn])
+            game.scene.start("loading");
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");
@@ -129,7 +142,15 @@ class mainmenu extends Phaser.Scene
 	    
         //this.agrid.showNumbers();
 
-	}
+    }
+    
+    hideAllObjects(array)
+    {
+        for(var i = 0; i < array.length; i++)
+        {
+            array[i].setVisible(false);
+        }
+    }
 	
 	
 }

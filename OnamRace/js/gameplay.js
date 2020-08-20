@@ -10,36 +10,36 @@ class gameplay extends Phaser.Scene
     {   
         this.scene.bringToTop();
         //this.load.image(currentBoat.gamekey,currentBoat.playImg);
-        this.load.image('gamebg1','images/bg1.png')
-        this.load.image('gamebg2','images/bg2.png')
-        this.load.image('gamebg3','images/bg3.png')
-        this.load.image('gamebg4','images/bg4.png')
-        this.load.image('startLine','images/StartLine.png');
-        for(var i = 0; i < Boats.length; i++)
-        {
-            this.load.spritesheet(Boats[i].gamekey, Boats[i].playImg, Boats[i].frameDetails);
-        }
-        for(var i = 0; i < Obstacles.length; i++)
-        {
-            this.load.image(Obstacles[i].gamekey,Obstacles[i].imgPath);
-        }
-        for(var i = 0; i < Crowd.length; i++)
-        {
-            this.load.image(Crowd[i].gamekey, Crowd[i].playImg);
-        }
-        if(isMobile != -1)
-        {
-            this.load.image('leftImg','images/leftBtn.png');
-            this.load.image('rightImg','images/rightBtn.png');
-        }
-        this.load.image(currentBoat.deadKey,currentBoat.deadPath);
+        // this.load.image('gamebg1','images/bg1.png')
+        // this.load.image('gamebg2','images/bg2.png')
+        // this.load.image('gamebg3','images/bg3.png')
+        // this.load.image('gamebg4','images/bg4.png')
+        // this.load.image('startLine','images/StartLine.png');
+        // for(var i = 0; i < Boats.length; i++)
+        // {
+        //     this.load.spritesheet(Boats[i].gamekey, Boats[i].playImg, Boats[i].frameDetails);
+        // }
+        // for(var i = 0; i < Obstacles.length; i++)
+        // {
+        //     this.load.image(Obstacles[i].gamekey,Obstacles[i].imgPath);
+        // }
+        // for(var i = 0; i < Crowd.length; i++)
+        // {
+        //     this.load.image(Crowd[i].gamekey, Crowd[i].playImg);
+        // }
+        // if(isMobile != -1)
+        // {
+        //     this.load.image('leftImg','images/leftBtn.png');
+        //     this.load.image('rightImg','images/rightBtn.png');
+        // }
+        // this.load.image(currentBoat.deadKey,currentBoat.deadPath);
 
         
-        this.load.audio('crashAudio','audio/crashing wood.mp3');
+        // this.load.audio('crashAudio','audio/crashing wood.mp3');
 
-        this.load.image('MUSICOnImg','images/icon_sound_music.png');
-        this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
-        this.load.image('PauseImg','images/pauseBtn.png');
+        // this.load.image('MUSICOnImg','images/icon_sound_music.png');
+        // this.load.image('MUSICOffImg','images/icon_sound_music_off.png');
+        // this.load.image('PauseImg','images/pauseBtn.png');
         isInGame = true;
     }
 
@@ -296,10 +296,10 @@ class gameplay extends Phaser.Scene
             if(this.sys.game.device.os.android == true)
             {
                 console.log("android true");
-                //this.leftBtn.emit("pointerdown");
-                //this.leftBtn.emit("pointerout");
-                //this.rightBtn.emit("pointerdown");
-                //this.rightBtn.emit("pointerout");
+                // this.leftBtn.emit("pointerdown");
+                // this.leftBtn.emit("pointerout");
+                // this.rightBtn.emit("pointerdown");
+                // this.rightBtn.emit("pointerout");
             }
             // if(isMobile != -1)
             // {

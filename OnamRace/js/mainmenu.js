@@ -42,6 +42,26 @@ class mainmenu extends Phaser.Scene
         SCROLL_SPEED = config.height/160;
         TEXT_SIZE = config.height/16;
         CAR_MOVE_SPEED = config.width/106.667;
+        var sound = this.sound.add('rowIns',{
+            mute:false,
+            volume:1,
+            rate:1,
+            seek:0,
+            loop:true,
+            delay:0
+        });
+        sound.play();
+        sound.stop();
+        sound = this.sound.add('rowbgm',{
+            mute:false,
+            volume:1,
+            rate:1,
+            seek:0,
+            loop:true,
+            delay:0
+        });
+        sound.play();
+        sound.stop();
 	  
     	console.log("SCROLL_SPEED " + SCROLL_SPEED + "\nCAR_MOVE_SPEED  " + CAR_MOVE_SPEED + "\nTEXT_SIZE " + TEXT_SIZE);
         var bg = this.add.image(config.width/2,config.height/2,'menubg').setOrigin(0.5);
@@ -61,10 +81,10 @@ class mainmenu extends Phaser.Scene
             // {
             // }
             this.hideAllObjects([logo,gname,playBtn,insBtn,settingBtn,shopBtn,musicOnBtn,musicOffBtn])
-            if(!eventInit)
+            //if(!eventInit)
                 game.scene.start("loading");
-            else
-                game.scene.start("gameplay")
+            //else
+                //game.scene.start("gameplay")
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");

@@ -1,4 +1,4 @@
-eventInit = false, isInGame = false;
+
 class gameplay extends Phaser.Scene
 {
     constructor()

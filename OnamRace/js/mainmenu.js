@@ -37,6 +37,8 @@ class mainmenu extends Phaser.Scene
 
     create()
     {
+        // this.sound.decodeAudio(['rowbgm','rowIns']);
+
         SCROLL_SPEED = config.height/160;
         TEXT_SIZE = config.height/16;
         CAR_MOVE_SPEED = config.width/106.667;
@@ -59,7 +61,10 @@ class mainmenu extends Phaser.Scene
             // {
             // }
             this.hideAllObjects([logo,gname,playBtn,insBtn,settingBtn,shopBtn,musicOnBtn,musicOffBtn])
-            game.scene.start("loading");
+            if(!eventInit)
+                game.scene.start("loading");
+            else
+                game.scene.start("gameplay")
             playBtn.removeListener("pointerdown");
             insBtn.removeListener("pointerdown");
             settingBtn.removeListener("pointerdown");
